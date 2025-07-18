@@ -6,14 +6,20 @@
 #include <fstream>
 #include <thread>
 #include <chrono>
+#include "resource.h"
 
 using namespace std;
+
 
 const vector<string> profiles = {
     "House",
     "Jazz",
     "Psy Trance",
+    "Techno",
+    "Drum & Bass",
+    "Ambient",
     "Stereo Movies",
+    "5.1 Movies",
     "Open Editor",
     "Exit"
 };
@@ -174,6 +180,7 @@ int main() {
     int key;
 
     const string configDir = "C:\\Program Files\\EqualizerAPO\\config\\";
+    const string profilesDir = "G:\\EQ-profiles\\";
     const string configTarget = configDir + "config.txt";
 
     printMenu(selected, getCurrentProfile(configTarget), false);
@@ -215,14 +222,18 @@ int main() {
                 if (profiles[selected] == "House") fileSuffix = "house";
                 else if (profiles[selected] == "Jazz") fileSuffix = "jazz";
                 else if (profiles[selected] == "Psy Trance") fileSuffix = "psy";
+                else if (profiles[selected] == "Techno") fileSuffix = "techno";
+                else if (profiles[selected] == "Drum & Bass") fileSuffix = "dnb";
+                else if (profiles[selected] == "Ambient") fileSuffix = "ambient";
                 else if (profiles[selected] == "Stereo Movies") fileSuffix = "movies";
+                else if (profiles[selected] == "5.1 Movies") fileSuffix = "surroundmovies";
 
                 if (fileSuffix.empty()) {
                     setColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
                     cout << "Unknown profile selected.\n";
                 }
                 else {
-                    string srcFile = configDir + "config-" + fileSuffix + ".txt";
+                    string srcFile = profilesDir + "config-" + fileSuffix + ".txt";
                     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     cout << "\nCopying " << srcFile << " to " << configTarget << " ...\n";
 
@@ -242,7 +253,7 @@ int main() {
             }
         }
     }
-
+    
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     return 0;
 }
