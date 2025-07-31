@@ -1,0 +1,50 @@
+# EQ Profile: Gaming from Stereo to 5.1
+# Center output compensated by -7 dB to correct broken knob
+# LFE boosted +4 dB for impactful explosions and effects
+# Routing from stereo source to 5.1 speakers
+
+# --- dB to Gain Factor Cheat Sheet ---
+# -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
+# -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
+# -8 dB  = 0.40     -7 dB  = 0.45     -6 dB  = 0.50     -5 dB  = 0.56
+# -4 dB  = 0.63     -3 dB  = 0.71     -2 dB  = 0.79     -1 dB  = 0.89
+#  0 dB  = 1.00     +1 dB  = 1.12     +2 dB  = 1.26     +3 dB  = 1.41
+# +4 dB  = 1.58     +5 dB  = 1.78     +6 dB  = 2.00     +7 dB  = 2.24
+# +8 dB  = 2.52     +9 dB  = 2.82     +10 dB = 3.16     +11 dB = 3.55
+# +12 dB = 3.98     +13 dB = 4.47     +14 dB = 5.01     +15 dB = 5.62
+# +16 dB = 6.31
+
+# --- Preamp to avoid clipping ---
+Preamp: -3.5 dB
+
+# --- Clear existing routing ---
+Copy: NONE
+
+# --- Stereo to 5.1 routing ---
+Copy: L=1 R=2                  # Front Left/Right
+Copy: C=0.45*L+0.45*R          # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
+Copy: LFE=1.58*L+1.58*R        # Subwoofer = L+R boosted by +4 dB (1.58 ≈ +4 dB)
+Copy: SL=0.56*1                     # Surround Left = L
+Copy: SR=0.56*2                     # Surround Right = R
+
+# --- Tight low-pass filtering for subwoofer ---
+Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
+Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+
+# --- High-pass filtering to offload low frequencies from mains ---
+Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
+Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
+
+
+# --- EQ for Gaming ---
+Filter: LFE LowShelf Fc=60 Hz Gain=6 dB Q=0.7           # Deep bass for explosions
+Filter: C Peaking Fc=1000 Hz Gain=3 dB Q=1.0            # Voice/dialog presence on center
+Filter: ALL Peaking Fc=3000 Hz Gain=2 dB Q=1.2          # High-mid clarity for spatial effects
+Filter: ALL HighShelf Fc=9000 Hz Gain=3 dB Q=0.8        # Crisp highs for footsteps, cues
+Filter: ALL LowShelf Fc=120 Hz Gain=1.5 dB Q=0.7        # Low end fullness without muddiness
+
+GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
+
+# --- Rear speaker delay for improved surround effect ---
+Delay: SL=20 ms
+Delay: SR=20 ms

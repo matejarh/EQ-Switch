@@ -1,0 +1,53 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/imgui",
+                "${workspaceFolder}/imgui/backends",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/src/config",
+                "${workspaceFolder}/src/audio",
+                "${workspaceFolder}/src/gui",
+                "${workspaceFolder}/src/utils"
+            ],
+            "defines": [
+                "_DEBUG",
+                "DUNICODE",
+                "D_UNICODE",
+                "VERSION=0.1"
+            ],
+            "windowsSdkVersion": "10.0.26100.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x86"
+        },
+        {
+            "name": "Win64",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/imgui",
+                "${workspaceFolder}/imgui/backends",
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/src/config",
+                "${workspaceFolder}/src/audio",
+                "${workspaceFolder}/src/gui",
+                "${workspaceFolder}/src/utils"
+            ],
+            "defines": [
+                "_DEBUG",
+                "DUNICODE",
+                "D_UNICODE",
+                "VERSION=0.1"
+            ],
+            "windowsSdkVersion": "10.0.26100.0",
+            "compilerPath": "cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}

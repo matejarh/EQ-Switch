@@ -1,0 +1,49 @@
+# EQ Profile: Drum and Bass from Stereo to 5.1
+# Center output compensated by -7 dB to correct broken knob
+# LFE boosted +6 dB for deep bass impact
+# Routing from stereo source to 5.1 speakers
+
+# --- dB to Gain Factor Cheat Sheet ---
+# -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
+# -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
+# -8 dB  = 0.40     -7 dB  = 0.45     -6 dB  = 0.50     -5 dB  = 0.56
+# -4 dB  = 0.63     -3 dB  = 0.71     -2 dB  = 0.79     -1 dB  = 0.89
+#  0 dB  = 1.00     +1 dB  = 1.12     +2 dB  = 1.26     +3 dB  = 1.41
+# +4 dB  = 1.58     +5 dB  = 1.78     +6 dB  = 2.00     +7 dB  = 2.24
+# +8 dB  = 2.52     +9 dB  = 2.82     +10 dB = 3.16     +11 dB = 3.55
+# +12 dB = 3.98     +13 dB = 4.47     +14 dB = 5.01     +15 dB = 5.62
+# +16 dB = 6.31
+
+# --- Preamp to avoid clipping ---
+Preamp: -4.5 dB
+
+# --- Clear existing routing ---
+Copy: NONE
+
+# --- Stereo to 5.1 routing ---
+Copy: L=1 R=2                  # Front Left/Right
+Copy: C=0.45*L+0.45*R          # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
+Copy: LFE=2*L+2*R              # Subwoofer = L+R boosted by +6 dB (2 ≈ +6 dB)
+Copy: SL=1                     # Surround Left = L
+Copy: SR=2                     # Surround Right = R
+
+# --- Tight low-pass filtering for subwoofer ---
+Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
+Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+
+# --- High-pass filtering to offload low frequencies from mains ---
+Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
+Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
+
+
+# --- EQ for Drum and Bass ---
+Filter: LFE LowShelf Fc=50 Hz Gain=8 dB Q=0.7           # Deep bass boost on subwoofer
+Filter: C Peaking Fc=150 Hz Gain=3 dB Q=1.0             # Kick presence on center
+Filter: ALL Peaking Fc=500 Hz Gain=2 dB Q=1.0           # Bass body and drum warmth
+Filter: ALL Peaking Fc=2000 Hz Gain=3 dB Q=1.2          # Snare and cymbal clarity
+Filter: ALL HighShelf Fc=8000 Hz Gain=2 dB Q=0.8        # Crisp highs for detail
+Filter: ALL LowShelf Fc=100 Hz Gain=1.5 dB Q=0.7        # Tight low control on all channels
+
+# --- Rear speaker delay for improved surround effect ---
+Delay: SL=20 ms
+Delay: SR=20 ms

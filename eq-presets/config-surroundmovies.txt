@@ -1,0 +1,39 @@
+# EQ Profile: Movies 5.1 Input Preset to 5.1 Output
+# Center output compensated by -7 dB to correct broken knob
+# LFE boosted +3 dB for impactful low frequencies
+# Balanced surround channels for immersive experience
+
+# --- dB to Gain Factor Cheat Sheet ---
+# -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
+# -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
+# -8 dB  = 0.40     -7 dB  = 0.45     -6 dB  = 0.50     -5 dB  = 0.56
+# -4 dB  = 0.63     -3 dB  = 0.71     -2 dB  = 0.79     -1 dB  = 0.89
+#  0 dB  = 1.00     +1 dB  = 1.12     +2 dB  = 1.26     +3 dB  = 1.41
+# +4 dB  = 1.58     +5 dB  = 1.78     +6 dB  = 2.00     +7 dB  = 2.24
+# +8 dB  = 2.52     +9 dB  = 2.82     +10 dB = 3.16     +11 dB = 3.55
+# +12 dB = 3.98     +13 dB = 4.47     +14 dB = 5.01     +15 dB = 5.62
+# +16 dB = 6.31
+
+# --- Preamp to avoid clipping ---
+Preamp: -1.0 dB
+
+# --- Clear existing routing ---
+Copy: NONE
+
+# --- Pass-through routing (5.1) ---
+Copy: L=1           # Front Left
+Copy: R=2           # Front Right
+Copy: C=0.56*3      # Center
+Copy: LFE=2.00*4    # Subwoofer
+Copy: SL=5          # Surround Left
+Copy: SR=6          # Surround Right
+
+# --- EQ for movies ---
+Filter: C Peaking Fc=1000 Hz Gain=3 dB Q=1.0          # Boost center for clear dialogue
+Filter: ALL LowShelf Fc=100 Hz Gain=2 dB Q=0.7          # Warmth on all channels
+Filter: LFE LowShelf Fc=60 Hz Gain=10 dB Q=0.7          # Strong deep bass on subwoofer
+Filter: ALL Peaking Fc=3000 Hz Gain=2 dB Q=1.2         # Clear highs for ambience and effects
+Filter: SL Peaking Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround left
+Filter: SR Peaking Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround right
+
+GraphicEQ: 25 1.7; 40 3.6; 63 4.4; 100 4.9; 160 0.96; 250 -0.71; 400 -0.9; 630 -0.9; 1000 1.5; 1600 6; 2500 6.5; 4000 7.1; 6300 5.2; 10000 2.3; 16000 0

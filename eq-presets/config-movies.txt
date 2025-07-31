@@ -1,0 +1,66 @@
+# EQ Profile: Stereo Movie Preset from Stereo to 5.1
+# Center output compensated by -7 dB to correct broken knob
+# LFE boosted +3 dB for cinematic bass
+# Surrounds slightly softened for ambient effects
+
+# --- dB to Gain Factor Cheat Sheet ---
+# -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
+# -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
+# -8 dB  = 0.40     -7 dB  = 0.45     -6 dB  = 0.50     -5 dB  = 0.56
+# -4 dB  = 0.63     -3 dB  = 0.71     -2 dB  = 0.79     -1 dB  = 0.89
+#  0 dB  = 1.00     +1 dB  = 1.12     +2 dB  = 1.26     +3 dB  = 1.41
+# +4 dB  = 1.58     +5 dB  = 1.78     +6 dB  = 2.00     +7 dB  = 2.24
+# +8 dB  = 2.52     +9 dB  = 2.82     +10 dB = 3.16     +11 dB = 3.55
+# +12 dB = 3.98     +13 dB = 4.47     +14 dB = 5.01     +15 dB = 5.62
+# +16 dB = 6.31
+
+# --- Preamp to avoid clipping ---
+Preamp: -3 dB
+
+# --- Clear existing routing ---
+Copy: NONE
+
+# --- Stereo routing ---
+Copy: L=1 R=2            # Front Left/Right
+Copy: C=0.25*L+0.25*R    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB) + add 2 dB
+Copy: LFE=0.45*L+0.45*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: SL=0.32*1         # Surround Left = L at -12 dB
+Copy: SR=0.32*2         # Surround Right = R at -12 dB
+
+# --- Tight low-pass filtering for subwoofer ---
+Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
+Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+
+# --- High-pass filtering to offload low frequencies from mains ---
+Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
+Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
+
+
+# --- Dialog and soundtrack clarity ---
+Filter: ALL Peaking Fc=300 Hz Gain=-1.5 dB Q=1.0    # Reduce mud
+Filter: ALL Peaking Fc=600 Hz Gain=2 dB Q=0.9       # Voice presence
+Filter: ALL Peaking Fc=1200 Hz Gain=1.5 dB Q=1.0    # Improve intelligibility
+Filter: ALL Peaking Fc=4000 Hz Gain=1.5 dB Q=1.0    # Brighten speech and FX
+Filter: ALL Peaking Fc=8000 Hz Gain=2 dB Q=0.9      # Add cinematic sparkle
+
+# --- Bass and impact ---
+Filter: ALL Peaking Fc=60 Hz Gain=3 dB Q=1.0        # Sub bass for effects
+Filter: ALL LowShelf Fc=80 Hz Gain=2 dB Q=0.7       # Warm low-end body
+
+# ---  Cut the speech band on rear (~500 Hz – 2.5 kHz) ---
+Filter: ON SL Peaking Fc=600 Hz Gain=-6 dB Q=1.0
+Filter: ON SL Peaking Fc=1200 Hz Gain=-6 dB Q=1.0
+Filter: ON SL Peaking Fc=2500 Hz Gain=-6 dB Q=1.0
+
+Filter: ON SR Peaking Fc=600 Hz Gain=-6 dB Q=1.0
+Filter: ON SR Peaking Fc=1200 Hz Gain=-6 dB Q=1.0
+Filter: ON SR Peaking Fc=2500 Hz Gain=-6 dB Q=1.0
+
+# --- Final polish ---
+Filter: ALL HighShelf Fc=10000 Hz Gain=1.5 dB Q=0.8  # Crisp air
+
+GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 0; 1000 0; 1600 0; 2500 1.2; 4000 2.8; 6300 3.1; 10000 2.3; 16000 0
+
+# --- Rear speaker delay for improved surround effect ---
+Delay: SL=20 ms
+Delay: SR=20 ms
