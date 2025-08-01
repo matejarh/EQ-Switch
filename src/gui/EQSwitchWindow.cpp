@@ -47,19 +47,59 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
 
     // VU Meters section
-    ImGui::Text("VU Meters:");
+    static VuMeterMode vuMeterMode = VuMeterMode::ProgressBar;
+    const char *modes[] = {"Progress Bar", "LED Horizontal", "LED Vertical"};
+    int currentMode = static_cast<int>(vuMeterMode);
 
-    VuMeters meters;
-    meters.LedVuMeterHorizontal(vuBuffer, main_scale);
+    // Find max label width for combo
+    float maxWidth = 0.0f;
+    for (int i = 0; i < IM_ARRAYSIZE(modes); ++i)
+    {
+        ImVec2 size = ImGui::CalcTextSize(modes[i]);
+        if (size.x > maxWidth)
+            maxWidth = size.x;
+    }
+    maxWidth += ImGui::GetStyle().FramePadding.x * 2 + 10.0f; // Add padding
+
+    // Draw label
+    ImGui::Spacing();
+    ImGui::Text("VU Meters:");
+    ImGui::PushFont(g_SmallFont);
+    ImGui::SameLine();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 2.0f); // Fine-tune vertical alignment
+
+    // Set fixed combo width
+    ImGui::SetNextItemWidth(maxWidth);
+    if (ImGui::Combo("##VU Mode", &currentMode, modes, IM_ARRAYSIZE(modes)))
+    {
+        vuMeterMode = static_cast<VuMeterMode>(currentMode);
+    }
+    ImGui::PopFont();
+    ImGui::Spacing();
+    VuMeters vuMeters;
+
+    switch (vuMeterMode)
+    {
+    case VuMeterMode::ProgressBar:
+        vuMeters.VuMeterProgresBar(vuBuffer, main_scale);
+        break;
+    case VuMeterMode::LedHorizontal:
+        vuMeters.LedVuMeterHorizontal(vuBuffer, main_scale);
+        break;
+    case VuMeterMode::LedVertical:
+        vuMeters.LedVuMeter(vuBuffer, main_scale);
+        break;
+    }
 
     ImGui::Spacing();
     ImGui::Separator();
+    ImGui::Spacing();
 
     // Profile selection section
     ImGui::Text("Available Profiles:");
-
+    ImGui::Spacing();
     static bool shouldScrollToSelected = true;
-
+    ImGui::PushFont(g_SmallFont);
     if (ImGui::BeginListBox("##ProfileList", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8)))
     {
         for (size_t i = 0; i < profiles.size(); ++i)
@@ -92,6 +132,11 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
         ImGui::EndListBox();
     }
+    ImGui::PopFont();
+
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
 
     if (ImGui::Button("Apply"))
     {
@@ -109,26 +154,16 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     {
         launchEditor();
     }
+
     ImGui::SameLine();
     if (ImGui::Button("Exit"))
     {
         if (p_exit)
             *p_exit = true;
     }
-    /* if (ImGui::Button("Launch Editor", ImVec2(600 * main_scale, 22 * main_scale))) */
 
-    /* for (size_t i = 0; i < profiles.size(); ++i)
-    {
-        const Profile &profile = profiles[i];
-        std::string label = profile.label;
-
-        if (ImGui::Selectable(label.c_str(), selectedProfile == i, 0, ImVec2(200, 40)))
-        {
-            selectedProfile = static_cast<int>(i);
-            profileManager.applyProfile(profile);
-            currentProfile = profile.label;
-        }
-    } */
+    ImGui::Spacing();
+    ImGui::Separator();
 
     ImGui::End();
 }

@@ -5,6 +5,13 @@
 #include <imgui.h>
 #include "fonts.h"
 
+enum class VuMeterMode
+{
+    ProgressBar,
+    LedHorizontal,
+    LedVertical
+};
+
 class VuMeters
 {
 public:
