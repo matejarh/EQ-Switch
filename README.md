@@ -30,6 +30,9 @@ EQSwitch/
 │ ├── utils/
 │ │ ├── VUBuffer.{cpp,h}
 │ │ └── Fonts.{cpp,h}
+│ │ └── AppLauncher.{cpp,h}
+│ │ └── ChannelLabels.{cpp,h}
+│ │ └── SystemUtils.{cpp,h}
 ├── eq-presets/ # Your custom config .txt profiles
 ├── launch_editor.bat # Optional editor launcher
 ├── resources/ # Icons / resources
