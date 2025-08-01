@@ -56,7 +56,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
 
     // VU Meters section
-    static VuMeterMode vuMeterMode = VuMeterMode::ProgressBar;
+    static VuMeterMode vuMeterMode = VuMeterMode::LedHorizontal; // Default mode
     const char *modes[] = {"Progress Bar", "LED Horizontal", "LED Vertical"};
     int currentMode = static_cast<int>(vuMeterMode);
 
