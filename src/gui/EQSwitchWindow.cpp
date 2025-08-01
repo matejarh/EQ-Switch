@@ -6,6 +6,7 @@
 #include <vector>
 #include <filesystem>
 #include <fonts.h>
+#include <SystemUtils.h>
 
 int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::string &currentProfile)
 {
@@ -40,6 +41,14 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
                      ImGuiWindowFlags_NoMove |
                      ImGuiWindowFlags_NoCollapse);
 
+    ImGui::PushFont(g_SmallFont);
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
+    ImGui::TextWrapped("EQ Switch lets you preview and activate Equalizer APO profiles.\nUseful for routing stereo to 5.1 and testing spatial setups.");
+    ImGui::PopStyleColor();
+    ImGui::PopFont();
+
+    ImGui::Separator();
+    ImGui::Spacing();
     ImGui::Text("Current Active Profile: ");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(0.325f, 0.557f, 0.796f, 1.0f), "%s", currentProfile.c_str());
@@ -163,6 +172,47 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     }
 
     ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+    ImGui::PushFont(g_SmallFont);
+    if (!IsEqualizerAPOInstalled())
+    {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Equalizer APO is not installed or not accessible.");
+        ImGui::Text("Please install Equalizer APO to use this application.");
+    }
+    /*     else
+        {
+            ImGui::Text("Equalizer APO is installed and accessible.");
+        } */
+    if (!IsProfilesFolderAccessible())
+    {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Profiles folder is not accessible.");
+        ImGui::Text("Please check the permissions of the profiles folder.");
+    }
+    /*     else
+        {
+            ImGui::Text("Profiles folder is accessible.");
+        } */
+    if (!IsLaunchEditorBatAvailable())
+    {
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Launch Editor batch file is not available.");
+        ImGui::Text("Please ensure the launch editor script is present in the application directory.");
+    }
+    /*     else
+        {
+            ImGui::Text("Launch Editor batch file is available.");
+        } */
+
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+    ImGui::Text("Version: 1.0.0"); // Example version, replace with actual version if available
+    ImGui::SameLine();
+    ImGui::Text("Developed by: Grower");
+    ImGui::Spacing();
+
+    ImGui::PopFont();
+
     ImGui::Separator();
 
     ImGui::End();
