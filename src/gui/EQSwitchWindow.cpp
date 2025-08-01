@@ -59,7 +59,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
         
         ImVec4 color;
 
-        if (vu < 0.5f)
+        if (vu < 0.6f)
             color = ImVec4(0.2f, 0.9f, 0.2f, 1.0f); // Green
         else if (vu < 0.9f)
             color = ImVec4(0.9f, 0.7f, 0.1f, 1.0f); // Yellow
