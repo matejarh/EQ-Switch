@@ -16,6 +16,7 @@
 
 ## 📦 Folder Structure
 
+```
 EQSwitch/
 ├── imgui/ # ImGui + backends (DX11/Win32)
 ├── src/
@@ -34,7 +35,7 @@ EQSwitch/
 ├── resources/ # Icons / resources
 ├── tasks.json # VSCode build tasks
 └── README.md
-
+```
 
 ---
 
@@ -45,7 +46,7 @@ EQSwitch/
 - Windows (x64)
 - Visual Studio or `cl.exe` via Developer Command Prompt
 - [ImGui](https://github.com/ocornut/imgui) (included locally)
-- Equalizer APO installed
+- [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) installed
 
 ### ⚙️ VSCode Build with `tasks.json`
 
