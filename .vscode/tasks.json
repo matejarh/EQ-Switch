@@ -59,11 +59,65 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
             "problemMatcher": [
                 "$msCompile"
             ]
-        }
+        },
+        {
+            "label": "Build Release",
+            "type": "shell",
+            "command": "cl.exe",
+            "args": [
+                "/std:c++17",
+                "/EHsc",
+                "/O2",                   // Optimization
+                "/MT",                   // Static runtime
+                "/DNDEBUG",              // Disable debug assertions
+                "/DUNICODE",
+                "/D_UNICODE",
+                "/Fo:build\\",
+                "/I", "imgui",
+                "/I", "imgui\\backends",
+                "/I", "src",
+                "/I", "src\\gui",
+                "/I", "src\\audio",
+                "/I", "src\\utils",
+                "/I", "src\\config",
+                "/I", "resources",
+                "imgui\\imgui.cpp",
+                "imgui\\imgui_draw.cpp",
+                "imgui\\imgui_tables.cpp",
+                "imgui\\imgui_widgets.cpp",
+                "imgui\\backends\\imgui_impl_win32.cpp",
+                "imgui\\backends\\imgui_impl_dx11.cpp",
+                "src\\audio\\AudioCapture.cpp",
+                "src\\config\\ProfileManager.cpp",
+                "src\\gui\\EQSwitchWindow.cpp",
+                "src\\utils\\VUBuffer.cpp",
+                "src\\utils\\AppLauncher.cpp",
+                "src\\utils\\ChannelLabels.cpp",
+                "src\\utils\\fonts.cpp",
+                "src\\main.cpp",
+                "build\\resource.res",
+                "/link",
+                "/SUBSYSTEM:WINDOWS",
+                "dxgi.lib",
+                "d3d11.lib",
+                "user32.lib",
+                "gdi32.lib",
+                "Shell32.lib",
+                "ole32.lib",
+                "uuid.lib",
+                "Advapi32.lib",
+                "/OUT:build\\EQSwitch.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+            }
       ]
 }
