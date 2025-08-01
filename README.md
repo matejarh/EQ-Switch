@@ -65,9 +65,10 @@ The project comes with a preconfigured `tasks.json` for compiling with `cl.exe`.
 
 **To build:**
 
-1. Open VSCode from the “Developer Command Prompt for VS 2022”
-2. Press `Ctrl+Shift+B` to build the project
-3. Run the resulting `EQSwitch.exe`
+1. Clone the repository.
+2. Open VSCode from the “Developer Command Prompt for VS 2022”
+3. Press `Ctrl+Shift+B` to build the project
+4. Run the resulting `EQSwitch.exe`
 
 ---
 
