@@ -152,3 +152,83 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
     ImGui::End();
 }
+
+/* void LedVuMeter()
+{
+    // VU meters section
+    ImGui::Separator();
+    ImGui::Text("VU Meters:");
+    ImGui::BeginGroup();
+
+    const int numLeds = 8;
+    const ImVec2 ledSize(30, 20);                                           // LED width x height
+    const float ledSpacing = 6.0f;                                          // Gap between LEDs
+    const float vuHeight = numLeds * (ledSize.y + ledSpacing) - ledSpacing; // Total height
+
+    for (int ch = 0; ch < NUM_CHANNELS; ++ch)
+    {
+        float vu = GetChannelVU(ch);
+        int activeLeds = static_cast<int>(vu * numLeds + 0.5f);
+
+        // Begin full column
+        ImGui::BeginGroup();
+        
+        ImGui::PushID(ch); // Unique ID for each channel group
+
+        // Calculate position for LEDs
+        ImVec2 groupPos = ImGui::GetCursorScreenPos();
+        float columnWidth = ledSize.x + ledSpacing; // Width of each column including spacing
+        float columnXCenter = groupPos.x + columnWidth * 0.5f;
+
+        // Determine label
+        const char *label = (ch < 6) ? channelLabels[ch] : "Ch?";
+        ImVec2 labelSize = ImGui::CalcTextSize(label);
+
+        // Position label centered above column
+        ImVec2 labelPos(columnXCenter - labelSize.x * 0.5f, groupPos.y);
+
+        // Draw label manually (so it's pixel-accurate)
+        ImGui::GetWindowDrawList()->AddText(g_SmallFont, 20.0f, labelPos, IM_COL32(160, 160, 160, 255), label);
+
+        // Reserve space so LED drawing starts below label
+        ImGui::Dummy(ImVec2(columnWidth, labelSize.y + 1.0f)); // add vertical spacing
+
+        // --- LED stack with fixed size container ---
+        ImVec2 ledStackPos = ImGui::GetCursorScreenPos();
+        ImVec2 ledStackSize = ImVec2(ledSize.x, vuHeight);
+
+        ImGui::InvisibleButton("##vu_bg", ledStackSize); // Reserve space
+        ImDrawList *drawList = ImGui::GetWindowDrawList();
+        ImVec2 pos = ImGui::GetItemRectMin();
+
+        for (int i = 0; i < numLeds; ++i)
+        {
+            float y = pos.y + vuHeight - (i + 1) * (ledSize.y + ledSpacing);
+
+            if (i < activeLeds)
+            {
+                ImU32 color = (i == numLeds - 1) ? IM_COL32(255, 0, 0, 255) : (i >= 5) ? IM_COL32(255, 255, 0, 255)
+                                                                                       : IM_COL32(0, 255, 0, 255);
+
+                drawList->AddRectFilled(
+                    ImVec2(pos.x, y),
+                    ImVec2(pos.x + ledSize.x, y + ledSize.y),
+                    color, 2.0f);
+            }
+            else
+            {
+                drawList->AddRect(
+                    ImVec2(pos.x, y),
+                    ImVec2(pos.x + ledSize.x, y + ledSize.y),
+                    IM_COL32(60, 60, 60, 255), 2.0f);
+            }
+        }
+        ImGui::PopID(); // End unique ID for channel group
+        ImGui::EndGroup();
+
+        if (ch < NUM_CHANNELS - 1)
+            ImGui::SameLine();
+    }
+
+    ImGui::EndGroup();
+} */
