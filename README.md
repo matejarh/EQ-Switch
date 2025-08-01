@@ -8,12 +8,23 @@
 
 ## ✨ Features
 
-- Fast GUI switching for Equalizer APO profiles
-- VU meter visualization per audio channel (6-channel support by default)
-- Automatically loads profiles from a specified directory
-- Scrollable and selectable profile list with double-click to apply
-- Optional profile editing via external config editor
-- Small footprint, no installation required
+- 🎚️ **Real-Time Audio VU Meters**  
+  Visualize levels for up to 6 channels using Progress Bars, LED-style Vertical or Horizontal meters.
+
+- 🖱️ **Fast Profile Switching**  
+  Easily switch Equalizer APO profiles with one click or double-click.
+
+- 🎨 **Dark Modern Theme**  
+  Includes a custom dark UI theme inspired by VS Code Dark Modern.
+
+- 💾 **Prebuilt Profiles Included**  
+  Comes with stereo-to-5.1 transformation profiles ready to use.
+
+- 🧠 **Persistent Selection**  
+  Keeps track of your current profile and scrolls to it on startup.
+
+- 🔧 **Modular C++ Codebase**  
+  Easily extensible—components like theming, fonts, meters, and audio capture are isolated in clean modules.
 
 ---
 
@@ -47,7 +58,12 @@ EQSwitch/
 ├── c_cpp_properties.json
 └── README.md
 ```
+---
+## Controls
 
+- **Double-click** a profile in the list to apply
+- **Use the dropdown** to switch VU meter style (Progress Bar / LED Horizontal / LED Vertical)
+- **Apply button** to re-apply current profile manually
 ---
 
 ## 🛠️ Build Instructions
@@ -55,17 +71,18 @@ EQSwitch/
 ### ✅ Requirements
 
 - Windows (x64)
-- Visual Studio or `cl.exe` via Developer Command Prompt
+- VSCode or `cl.exe` via Developer Command Prompt
 - [ImGui](https://github.com/ocornut/imgui) (included locally)
 - [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) installed
 
 ### ⚙️ VSCode Build with `tasks.json`
 
-The project comes with a preconfigured `tasks.json` for compiling with `cl.exe`. You must have Visual Studio’s C++ tools installed.
+The project comes with a preconfigured `tasks.json` for compiling with `cl.exe`. You must have VSCode’s C++ tools installed.
 
 **To build:**
 
-1. Clone the repository.
+1. Install VSCode with C++ desktop development tools
+2. Clone the repository.
 2. Open VSCode from the “Developer Command Prompt for VS 2022”
 3. Press `Ctrl+Shift+B` to build the project
 4. Run the resulting `EQSwitch.exe`
@@ -80,6 +97,7 @@ Make sure your directory structure matches this:
 - `C:\Program Files\EqualizerAPO\config\config.txt` — target config for active profile
 
 Each profile file should include a line:
+
 ```text
 # EQ Profile: My Preset Name
 ```
@@ -102,10 +120,12 @@ Each profile file should include a line:
 - Make sure to run the app with proper permissions if needed to restart the Equalizer APO service
 
 ## 📃 License
+
 MIT — feel free to use, modify, and redistribute.
 Credit to [ImGui](https://github.com/ocornut/imgui) and [Equalizer APO](https://sourceforge.net/projects/equalizerapo/).
 
 ## 🙏 Credits
+
 - Developed by Matej Arh
 - Special thanks to the [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) community and [ImGui](https://github.com/ocornut/imgui) by Omar Cornut.
 - Fonts: Carlito (from Windows font directory)
