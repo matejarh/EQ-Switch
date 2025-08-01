@@ -180,7 +180,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
     
     // Setup Dear ImGui style
-    ApplyEQSwitchDarkTheme();
+    // ApplyEQSwitchDarkTheme();
+    ApplyVSCodeDarkModernTheme();
 
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);

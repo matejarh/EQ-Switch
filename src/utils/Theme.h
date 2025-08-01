@@ -3,3 +3,4 @@
 
 // Applies the dark theme to ImGui
 void ApplyEQSwitchDarkTheme();
+void ApplyVSCodeDarkModernTheme();
