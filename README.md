@@ -1,18 +1,25 @@
 # 🎛️ EQ Switch
 
-**EQ Switch** is a Windows GUI tool for managing [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration profiles with live audio VU meters and a smooth ImGui interface.
+**EQ Switch** is a minimalist ImGui/DirectX11-based C++ desktop application that lets you easily switch between different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) profiles. It's designed for fast access to audio configurations, especially when working with multiple speaker setups like stereo, 5.1, or custom room correction profiles.
+
+![screenshot](screenshot.png "EQ Switch")
 
 ---
 
 ## ✨ Features
 
-- 📁 Load multiple Equalizer APO config profiles from a folder
-- 🔄 Apply profiles with a single click or double-click
-- 🎚️ Real-time VU meters for up to 6 audio channels
-- 📝 Launch your profile editor (via `launch_editor.bat`)
-- 🖼️ Minimal fullscreen-style layout with font scaling for HiDPI
+- Fast GUI switching for Equalizer APO profiles
+- VU meter visualization per audio channel (6-channel support by default)
+- Automatically loads profiles from a specified directory
+- Scrollable and selectable profile list with double-click to apply
+- Optional profile editing via external config editor
+- Small footprint, no installation required
 
 ---
+
+## 📦 Prebuilt Profiles
+
+The project comes with a set of prebuilt Equalizer APO profiles, **primarily used for transforming stereo audio into 5.1 surround**. These profiles are located in the `eq-presets/` directory and can be customized or replaced as needed.
 
 ## 📦 Folder Structure
 
@@ -37,6 +44,7 @@ EQSwitch/
 ├── launch_editor.bat # Optional editor launcher
 ├── resources/ # Icons / resources
 ├── tasks.json # VSCode build tasks
+├── c_cpp_properties.json
 └── README.md
 ```
 
@@ -75,6 +83,17 @@ Each profile file should include a line:
 # EQ Profile: My Preset Name
 ```
 
+## 💡 Usage
+
+- Run the compiled executable.
+- Use the profile list to select and apply an Equalizer APO profile.
+- VU meters update in real-time, displaying audio levels for each channel.
+- Double-click a profile to apply it.
+- Click "Apply" to manually activate the selected profile.
+- Press `ESC` or close the window to exit.
+
+---
+
 ## 💡 Tips
 
 - Add your fonts in `utils/Fonts.cpp`
@@ -86,5 +105,6 @@ MIT — feel free to use, modify, and redistribute.
 Credit to [ImGui](https://github.com/ocornut/imgui) and [Equalizer APO](https://sourceforge.net/projects/equalizerapo/).
 
 ## 🙏 Credits
-Developed by Matej Arh
-Special thanks to the [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) and [ImGui](https://github.com/ocornut/imgui) communities.
+- Developed by Matej Arh
+- Special thanks to the [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) community and [ImGui](https://github.com/ocornut/imgui) by Omar Cornut.
+- Fonts: Carlito (from Windows font directory)
