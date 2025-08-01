@@ -54,11 +54,14 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     for (int ch = 0; ch < vuBuffer.getChannelCount(); ++ch)
     {
         float vu = vuBuffer.get(ch);
+        std::string label = channelLabels[ch];
+        while (label.length() < 3) label += ' '; 
+        
         ImVec4 color;
 
         if (vu < 0.5f)
             color = ImVec4(0.2f, 0.9f, 0.2f, 1.0f); // Green
-        else if (vu < 0.8f)
+        else if (vu < 0.9f)
             color = ImVec4(0.9f, 0.7f, 0.1f, 1.0f); // Yellow
         else
             color = ImVec4(1.0f, 0.1f, 0.1f, 1.0f); // Red
@@ -70,8 +73,8 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
         // Channel label and percentage on same line, in small font
         ImGui::SameLine();
-        ImGui::PushFont(g_SmallFont);
-        ImGui::Text("%s  %.0f%%", channelLabels[ch], vu * 100.0f);
+        ImGui::PushFont(g_SmallFontMono);
+        ImGui::Text("%s %3.0f%%", label.c_str(), vu * 100.0f);
         ImGui::PopFont();
     }
 
@@ -123,7 +126,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
             const Profile &profile = profiles[selectedProfile];
             profileManager.applyProfile(profile);
             currentProfile = profile.label; // Optional: update display
-            initialized = false; // Resync selection next frame
+            initialized = false;            // Resync selection next frame
         }
     }
 
@@ -175,7 +178,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
         // Begin full column
         ImGui::BeginGroup();
-        
+
         ImGui::PushID(ch); // Unique ID for each channel group
 
         // Calculate position for LEDs
