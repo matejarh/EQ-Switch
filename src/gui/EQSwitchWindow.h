@@ -8,4 +8,4 @@ void ShowEQSwitchWindow(ProfileManager& profileManager,
                         VUBuffer& vuBuffer,
                         bool* p_exit = nullptr, float main_scale = 1.0f);
 
-int findCurrentProfileIndex(const std::vector<Profile>& profiles, const std::string& currentProfile);                   
+int findCurrentProfileIndex(const std::vector<Profile>& profiles, const std::string& currentProfile);           
