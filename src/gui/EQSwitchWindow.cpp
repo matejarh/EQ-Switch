@@ -44,6 +44,8 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::TextColored(ImVec4(1, 0, 0, 1), "%s", currentProfile.c_str());
     ImGui::Separator();
     ImGui::Spacing();
+
+    // VU Meters section
     ImGui::Text("VU Meters:");
 
     const int barHeight = 20 * main_scale;
@@ -76,6 +78,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
     ImGui::Separator();
 
+    // Profile selection section
     ImGui::Text("Available Profiles:");
 
     static bool shouldScrollToSelected = true;
