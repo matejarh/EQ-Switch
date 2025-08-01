@@ -144,7 +144,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
                      _T("EQ Switch"), nullptr};
     RegisterClassEx(&wc);
     g_hWnd = CreateWindow(wc.lpszClassName, _T("EQ Switch"),
-                          WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, (int)(800 * main_scale), (int)(600 * main_scale),
+                          WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, (int)(800 * main_scale), (int)(650 * main_scale),
                           nullptr, nullptr, wc.hInstance, nullptr);
 
     // Set window icon (small and big)
