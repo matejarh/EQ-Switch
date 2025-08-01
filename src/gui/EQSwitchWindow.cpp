@@ -41,7 +41,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
     ImGui::Text("Current Active Profile: ");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1, 0, 0, 1), "%s", currentProfile.c_str());
+    ImGui::TextColored(ImVec4(0.325f, 0.557f, 0.796f, 1.0f), "%s", currentProfile.c_str());
     ImGui::Separator();
     ImGui::Spacing();
 
