@@ -206,7 +206,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
     ImGui::Separator();
     ImGui::Spacing();
-    ImGui::Text("Version: 1.0.0"); // Example version, replace with actual version if available
+    ImGui::Text("Version: 1.1.0");
     ImGui::SameLine();
     ImGui::Text("Developed by: Grower");
     ImGui::Spacing();
