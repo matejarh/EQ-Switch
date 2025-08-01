@@ -103,6 +103,7 @@
                 "src\\utils\\fonts.cpp",
                 "src\\utils\\Theme.cpp",
                 "src\\utils\\VUMeters.cpp",
+                "src\\utils\\SystemUtils.cpp",
                 "src\\main.cpp",
                 "build\\resource.res",
                 "/link",
