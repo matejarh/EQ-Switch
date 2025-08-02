@@ -129,3 +129,20 @@ Credit to [ImGui](https://github.com/ocornut/imgui) and [Equalizer APO](https://
 - Developed by Matej Arh
 - Special thanks to the [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) community and [ImGui](https://github.com/ocornut/imgui) by Omar Cornut.
 - Fonts: Carlito (from Windows font directory)
+
+### 📋 Changelog
+
+#### v1.1.0 – Enhanced GUI and Theming
+- 🆕 Added support for switching between VU meter modes: **Progress Bar**, **LED Horizontal**, and **LED Vertical**
+- 🎨 Refined **Dark Modern** ImGui theme (VS Code–inspired)
+- 🧱 Introduced modular **VuMeters** class
+- 💡 Customizable font styles and layout improvements
+- ✅ Combo box now aligns properly and uses small font
+- 🛠️ Fixed profile selection issue and added auto-scroll behavior
+
+#### v1.0.0 – Initial Release
+- 🎚️ VU meters with Progress Bar visualization
+- 🔁 Equalizer APO profile switching with double-click
+- 🖼️ Fullscreen DX11/Win32 GUI with ImGui
+- 💾 Prebuilt stereo-to-5.1 Equalizer APO profiles included
+- 🧩 Modular C++ architecture (AudioCapture, GUI, Config, VU, Theme)
