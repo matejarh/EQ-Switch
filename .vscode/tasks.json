@@ -116,7 +116,7 @@
                 "ole32.lib",
                 "uuid.lib",
                 "Advapi32.lib",
-                "/OUT:build\\EQSwitch.exe"
+                "/OUT:bin\\EQSwitch.exe"
             ],
             "group": {
                 "kind": "build",
