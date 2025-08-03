@@ -5,6 +5,7 @@
 #include "ProfileManager.h"
 #include <vector>
 #include <EQSwitchWindow.h>
+#include "AppLauncher.h"
 
 
 int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::string &currentProfile)
@@ -17,7 +18,7 @@ int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::str
     return -1;
 }
 
-void ProfilesSection(ProfileManager profileManager)
+void ProfilesSection(ProfileManager &profileManager, std::string &currentProfileOut, int &selectedProfileOut, bool *p_exit)
 {
     static std::vector<Profile> profiles = profileManager.loadProfiles();
     static std::string currentProfile = profileManager.getCurrentProfile();
@@ -43,21 +44,21 @@ void ProfilesSection(ProfileManager profileManager)
             std::string label = profile.label;
             bool isSelected = (selectedProfile == i);
 
-            if (ImGui::Selectable(profile.label.c_str(), isSelected))
+            if (ImGui::Selectable(label.c_str(), isSelected))
             {
                 selectedProfile = static_cast<int>(i);
                 shouldScrollToSelected = false;
             }
 
             // Apply profile on double-click
-            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) // 0 = left mouse button
+            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
             {
                 profileManager.applyProfile(profile);
                 currentProfile = profile.label;
-                initialized = false; // Resync selection next frame
+                initialized = false;
             }
 
-            // Auto-scroll if selected item is not visible
+            // Scroll if needed
             if (isSelected && shouldScrollToSelected && !ImGui::IsItemVisible())
             {
                 ImGui::SetScrollHereY(0.5f);
@@ -68,4 +69,40 @@ void ProfilesSection(ProfileManager profileManager)
         ImGui::EndListBox();
     }
     ImGui::PopFont();
+
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+
+    if (ImGui::Button("Apply"))
+    {
+        if (selectedProfile >= 0 && selectedProfile < (int)profiles.size())
+        {
+            const Profile &profile = profiles[selectedProfile];
+            profileManager.applyProfile(profile);
+            currentProfile = profile.label; // Optional: update display
+            initialized = false;            // Resync selection next frame
+        }
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Open Editor"))
+    {
+        launchEditor();
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Exit"))
+    {
+        if (p_exit)
+            *p_exit = true;
+    }
+
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
+
+    // Output updated values
+    currentProfileOut = currentProfile;
+    selectedProfileOut = selectedProfile;
 }

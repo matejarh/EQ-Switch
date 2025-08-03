@@ -195,9 +195,9 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
 
     // Profiles section
-    ProfilesSection(profileManager);
+    ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit);
 
-    ImGui::Spacing();
+/*     ImGui::Spacing();
     ImGui::Separator();
     ImGui::Spacing();
 
@@ -227,7 +227,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
     ImGui::Spacing();
     ImGui::Separator();
-    ImGui::Spacing();
+    ImGui::Spacing(); */
     ImGui::PushFont(g_SmallFont);
     if (!IsEqualizerAPOInstalled())
     {
