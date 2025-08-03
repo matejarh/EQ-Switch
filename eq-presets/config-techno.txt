@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -4.5 dB
+Preamp: ALL -4.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -28,21 +28,25 @@ Copy: SL=1               # Surround Left = L
 Copy: SR=2               # Surround Right = R
 
 # --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
-Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
-Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
+Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
+Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
+Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
+Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
+Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
 
 
 # --- Techno EQ ---
-Filter: ALL LowShelf Fc=40 Hz Gain=5 dB Q=0.8         # Boost deep bass punch
-Filter: ALL Peaking Fc=100 Hz Gain=3 dB Q=1.0         # Sub bass presence
-Filter: ALL Peaking Fc=400 Hz Gain=-2 dB Q=1.0        # Reduce boxiness
-Filter: ALL Peaking Fc=800 Hz Gain=2 dB Q=1.2          # Add midrange definition
-Filter: ALL Peaking Fc=3000 Hz Gain=3 dB Q=1.0        # Crisp highs and presence
-Filter: ALL HighShelf Fc=10000 Hz Gain=4 dB Q=0.7     # Bright sparkle for synths
+Filter: ALL LS Fc=40 Hz Gain=5 dB Q=0.8         # Boost deep bass punch
+Filter: ALL PK Fc=100 Hz Gain=3 dB Q=1.0         # Sub bass presence
+Filter: ALL PK Fc=400 Hz Gain=-2 dB Q=1.0        # Reduce boxiness
+Filter: ALL PK Fc=800 Hz Gain=2 dB Q=1.2          # Add midrange definition
+Filter: ALL PK Fc=3000 Hz Gain=3 dB Q=1.0        # Crisp highs and presence
+Filter: ALL HS Fc=10000 Hz Gain=4 dB Q=0.7     # Bright sparkle for synths
 
 GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
 

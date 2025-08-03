@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -4 dB
+Preamp: ALL -4 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -23,29 +23,33 @@ Copy: NONE
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
 Copy: C=0.25*L+0.25*R    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=0.71*L+0.71*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: LFE=0.50*L+0.50*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: SL=0.9*1           # Surround Left = L (-1 dB)
 Copy: SR=0.9*2           # Surround Right = R (-1 dB)
 
 # --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
-Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
-Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
+Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
+Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
+Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
+Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
+Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
 
 
 # --- House Tonal Enhancements ---
-Filter: ALL Peaking Fc=60 Hz Gain=3.5 dB Q=1.0     # Punchy kick drum
-Filter: ALL Peaking Fc=120 Hz Gain=2.5 dB Q=1.0    # Warm bassline
-Filter: ALL Peaking Fc=700 Hz Gain=-1.5 dB Q=1.0   # Reduce muddiness
-Filter: ALL Peaking Fc=2500 Hz Gain=2 dB Q=1.0     # Hi-hats and percs
-Filter: ALL Peaking Fc=8000 Hz Gain=2.5 dB Q=0.8   # Air and sparkle
+Filter: ALL PK Fc=60 Hz Gain=3.5 dB Q=1.0     # Punchy kick drum
+Filter: ALL PK Fc=120 Hz Gain=2.5 dB Q=1.0    # Warm bassline
+Filter: ALL PK Fc=700 Hz Gain=-1.5 dB Q=1.0   # Reduce muddiness
+Filter: ALL PK Fc=2500 Hz Gain=2 dB Q=1.0     # Hi-hats and percs
+Filter: ALL PK Fc=8000 Hz Gain=2.5 dB Q=0.8   # Air and sparkle
 
 # --- Tonal shaping ---
-Filter: ALL LowShelf Fc=40 Hz Gain=2.5 dB Q=0.7    # Extra bottom depth
-Filter: ALL HighShelf Fc=10000 Hz Gain=2 dB Q=0.8  # Brilliance
+Filter: ALL LS Fc=40 Hz Gain=2.5 dB Q=0.7    # Extra bottom depth
+Filter: ALL HS Fc=10000 Hz Gain=2 dB Q=0.8  # Brilliance
 
 GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
 

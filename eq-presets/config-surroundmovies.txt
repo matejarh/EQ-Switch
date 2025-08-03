@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -1.0 dB
+Preamp: ALL -1.0 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -24,16 +24,14 @@ Copy: NONE
 Copy: L=1           # Front Left
 Copy: R=2           # Front Right
 Copy: C=0.56*3      # Center
-Copy: LFE=2.00*4    # Subwoofer
+Copy: LFE=1.41*4    # Subwoofer
 Copy: SL=5          # Surround Left
 Copy: SR=6          # Surround Right
 
 # --- EQ for movies ---
-Filter: C Peaking Fc=1000 Hz Gain=3 dB Q=1.0          # Boost center for clear dialogue
-Filter: ALL LowShelf Fc=100 Hz Gain=2 dB Q=0.7          # Warmth on all channels
-Filter: LFE LowShelf Fc=60 Hz Gain=10 dB Q=0.7          # Strong deep bass on subwoofer
-Filter: ALL Peaking Fc=3000 Hz Gain=2 dB Q=1.2         # Clear highs for ambience and effects
-Filter: SL Peaking Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround left
-Filter: SR Peaking Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround right
-
-GraphicEQ: 25 1.7; 40 3.6; 63 4.4; 100 4.9; 160 0.96; 250 -0.71; 400 -0.9; 630 -0.9; 1000 1.5; 1600 6; 2500 6.5; 4000 7.1; 6300 5.2; 10000 2.3; 16000 0
+Filter: C PK Fc=1000 Hz Gain=3 dB Q=1.0          # Boost center for clear dialogue
+Filter: ALL LS Fc=100 Hz Gain=2 dB Q=0.7          # Warmth on all channels
+Filter: LFE LS Fc=60 Hz Gain=10 dB Q=0.7          # Strong deep bass on subwoofer
+Filter: ALL PK Fc=3000 Hz Gain=2 dB Q=1.2         # Clear highs for ambience and effects
+Filter: SL PK Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround left
+Filter: SR PK Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround right

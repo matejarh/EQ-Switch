@@ -14,7 +14,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -1.5 dB
+Preamp: ALL -1.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -28,9 +28,9 @@ Copy: SL=5
 Copy: SR=6
 
 # --- EQ adjustments for gaming ---
-Filter: LFE LowShelf Fc=60 Hz Gain=6 dB Q=0.7            # Deep bass for explosions and effects
-Filter: C Peaking Fc=1000 Hz Gain=-7 dB Q=1.0            # Reduce center channel volume to compensate broken knob
-Filter: C Peaking Fc=3000 Hz Gain=3 dB Q=1.0             # Voice clarity boost
-Filter: ALL Peaking Fc=3000 Hz Gain=2 dB Q=1.2           # Enhance spatial detail cues on all channels
-Filter: ALL HighShelf Fc=9000 Hz Gain=3 dB Q=0.8         # Crisp highs for footsteps and directional sounds
-Filter: ALL LowShelf Fc=120 Hz Gain=1.5 dB Q=0.7         # Warmth and fullness without muddiness
+Filter: LFE LS Fc=60 Hz Gain=6 dB Q=0.7            # Deep bass for explosions and effects
+Filter: C PK Fc=1000 Hz Gain=-7 dB Q=1.0            # Reduce center channel volume to compensate broken knob
+Filter: C PK Fc=3000 Hz Gain=3 dB Q=1.0             # Voice clarity boost
+Filter: ALL PK Fc=3000 Hz Gain=2 dB Q=1.2           # Enhance spatial detail cues on all channels
+Filter: ALL HS Fc=9000 Hz Gain=3 dB Q=0.8         # Crisp highs for footsteps and directional sounds
+Filter: ALL LS Fc=120 Hz Gain=1.5 dB Q=0.7         # Warmth and fullness without muddiness

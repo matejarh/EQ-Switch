@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -3.5 dB
+Preamp: ALL -3.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -28,32 +28,36 @@ Copy: SL=1               # Surround Left = L
 Copy: SR=2               # Surround Right = R
 
 # --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
-Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
-Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
+Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
+Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
+Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
+Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
+Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
 
 
 # --- Healing Frequencies Boost ---
-Filter: ALL Peaking Fc=174 Hz Gain=3 dB Q=1.0
-Filter: ALL Peaking Fc=285 Hz Gain=3 dB Q=1.0
-Filter: ALL Peaking Fc=396 Hz Gain=3 dB Q=1.0
-Filter: ALL Peaking Fc=417 Hz Gain=3 dB Q=1.0
-Filter: ALL Peaking Fc=528 Hz Gain=3.5 dB Q=1.0
-Filter: ALL Peaking Fc=639 Hz Gain=2.5 dB Q=1.0
-Filter: ALL Peaking Fc=741 Hz Gain=2 dB Q=1.0
-Filter: ALL Peaking Fc=852 Hz Gain=2 dB Q=1.0
-Filter: ALL Peaking Fc=963 Hz Gain=2 dB Q=1.0
+Filter: ALL PK Fc=174 Hz Gain=3 dB Q=1.0
+Filter: ALL PK Fc=285 Hz Gain=3 dB Q=1.0
+Filter: ALL PK Fc=396 Hz Gain=3 dB Q=1.0
+Filter: ALL PK Fc=417 Hz Gain=3 dB Q=1.0
+Filter: ALL PK Fc=528 Hz Gain=3.5 dB Q=1.0
+Filter: ALL PK Fc=639 Hz Gain=2.5 dB Q=1.0
+Filter: ALL PK Fc=741 Hz Gain=2 dB Q=1.0
+Filter: ALL PK Fc=852 Hz Gain=2 dB Q=1.0
+Filter: ALL PK Fc=963 Hz Gain=2 dB Q=1.0
 
 # --- Optional gentle wave enhancements ---
-Filter: ALL Peaking Fc=4 Hz Gain=1.5 dB Q=0.5
-Filter: ALL Peaking Fc=8 Hz Gain=1.5 dB Q=0.5
+Filter: ALL PK Fc=4 Hz Gain=1.5 dB Q=0.5
+Filter: ALL PK Fc=8 Hz Gain=1.5 dB Q=0.5
 
 # --- Warmth and clarity ---
-Filter: ALL LowShelf Fc=60 Hz Gain=2 dB Q=0.7
-Filter: ALL HighShelf Fc=8000 Hz Gain=1.5 dB Q=0.8
+Filter: ALL LS Fc=60 Hz Gain=2 dB Q=0.7
+Filter: ALL HS Fc=8000 Hz Gain=1.5 dB Q=0.8
 
 GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 0; 1000 0; 1600 0; 2500 4.1; 4000 4.7; 6300 4.4; 10000 2.8; 16000 0
 

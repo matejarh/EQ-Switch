@@ -22,33 +22,36 @@ Copy: NONE
 
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
-Copy: C=0.23*L+0.23*R    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=0.79*L+0.79*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: C=0.23*1+0.23*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
+Copy: LFE=0.70*1+0.70*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: SL=0.8*1           # Surround Left = L (-2 dB)
 Copy: SR=0.8*2           # Surround Right = R (-2 dB)
 
 # --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE Fc=100 Hz Q=0.6   # First stage of 24 dB/oct low-pass to isolate sub-bass
-Filter: ON LFE Fc=100 Hz Q=0.6   # Second stage for steeper cutoff (total ~24 dB/oct)
+Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
+Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Left speaker (protect small speakers)
-Filter: ON R HighPass Fc=100 Hz Q=0.7   # Remove deep bass from Right speaker (protect small speakers)
-
+Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
+Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
+Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
+Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
+Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
 
 # --- Jazz Tonal Shaping ---
-Filter: ALL Peaking Fc=120 Hz Gain=2 dB Q=1.0     # Upright bass warmth
-Filter: ALL Peaking Fc=500 Hz Gain=-1 dB Q=1.0    # Mud control in lower mids
-Filter: ALL Peaking Fc=1500 Hz Gain=1.5 dB Q=1.2  # Horn and snare presence
-Filter: ALL Peaking Fc=3000 Hz Gain=1.5 dB Q=1.0  # Cymbals, articulation
-Filter: ALL Peaking Fc=8000 Hz Gain=2 dB Q=0.8    # Air and detail
+Filter: ALL PK Fc=120 Hz Gain=2 dB Q=1.0     # Upright bass warmth
+Filter: ALL PK Fc=500 Hz Gain=-1 dB Q=1.0    # Mud control in lower mids
+Filter: ALL PK Fc=1500 Hz Gain=1.5 dB Q=1.2  # Horn and snare presence
+Filter: ALL PK Fc=3000 Hz Gain=1.5 dB Q=1.0  # Cymbals, articulation
+Filter: ALL PK Fc=8000 Hz Gain=2 dB Q=0.8    # Air and detail
 
 # --- Tonal balance ---
-Filter: ALL LowShelf Fc=60 Hz Gain=1.5 dB Q=0.7   # Slight low-end lift
-Filter: ALL HighShelf Fc=12000 Hz Gain=1.5 dB Q=0.8  # Clarity and sparkle
-
-GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 0; 1000 0; 1600 0; 2500 4.1; 4000 4.7; 6300 4.4; 10000 2.8; 16000 0
+Filter: ALL LS Fc=60 Hz Gain=1.5 dB Q=0.7       # Slight low-end lift
+Filter: ALL HS Fc=12000 Hz Gain=1.5 dB Q=0.8    # Clarity and sparkle
 
 # --- Rear speaker delay for improved surround effect ---
+Copy: SL=0.7*SL   # -3 dB
+Copy: SR=0.7*SR
 Delay: SL=20 ms
 Delay: SR=20 ms
