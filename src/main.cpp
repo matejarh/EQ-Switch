@@ -24,13 +24,13 @@ static HWND g_hWnd = nullptr;
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+// Global Equalizer APO manager instance
+auto &apoManager = EqualizerAPOManager::getInstance();
 // Default global configuration paths
 std::string configDir = "C:\\Program Files\\EqualizerAPO\\config";
 std::string profilesDir = "..\\eq-presets\\";
-std::string configTarget = configDir + "\\config.txt";
+std::string configTarget = apoManager.getConfigDir() + "\\config.txt";
 
-// Global Equalizer APO manager instance
-auto &apoManager = EqualizerAPOManager::getInstance();
 
 // Forward declarations
 bool CreateDeviceD3D(HWND hWnd);

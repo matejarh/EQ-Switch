@@ -105,6 +105,8 @@
                 "src\\utils\\VUMeters.cpp",
                 "src\\utils\\SystemUtils.cpp",
                 "src\\utils\\EqualizerAPOManager.cpp",
+                "src\\utils\\PopupUtils.cpp",
+                "src\\utils\\ProfilesSelector.cpp",
                 "src\\main.cpp",
                 "build\\resource.res",
                 "/link",

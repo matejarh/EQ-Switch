@@ -6,11 +6,13 @@
 #include "utils/fonts.h"
 #include "utils/SystemUtils.h"
 #include "utils/EqualizerAPOManager.h"
+#include "utils/ProfilesSelector.h"
+#include <PopupUtils.h>
 #include <vector>
 #include <filesystem>
 #include <windows.h>
 
-int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::string &currentProfile)
+/* int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::string &currentProfile)
 {
     for (int i = 0; i < profiles.size(); ++i)
     {
@@ -18,7 +20,7 @@ int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::str
             return i;
     }
     return -1;
-}
+} */
 
 void ShowEQSwitchWindow(ProfileManager &profileManager,
                         VUBuffer &vuBuffer,
@@ -51,10 +53,20 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
     if (showMissingAPOPopup)
     {
-        ImGui::PushFont(g_unicodeFont); // <== your loaded unicode-compatible font
+        /* ImGui::PushFont(g_unicodeFont); // <== your loaded unicode-compatible font
         ImGui::OpenPopup("⚠ Equalizer APO Not Found");
-        showMissingAPOPopup = false; // Trigger only once
-        ImGui::PopFont();
+        ImGui::PopFont(); */
+        ShowStyledModalPopup(
+            "⚠ MissingAPO",
+            "Equalizer APO Not Found",
+            "Equalizer APO was not detected on this system.",
+            "Download Equalizer APO",
+            "https://sourceforge.net/projects/equalizerapo/",
+            []()
+            {
+                PostQuitMessage(0); // Exit on close
+            });
+        // showMissingAPOPopup = false; // Trigger only once
     }
 
     // Centered modal
@@ -164,7 +176,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::PopFont();
     ImGui::Spacing();
     VuMeters vuMeters;
-
+    
     switch (vuMeterMode)
     {
     case VuMeterMode::ProgressBar:
@@ -182,44 +194,8 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Separator();
     ImGui::Spacing();
 
-    // Profile selection section
-    ImGui::Text("Available Profiles:");
-    ImGui::Spacing();
-    static bool shouldScrollToSelected = true;
-    ImGui::PushFont(g_SmallFont);
-    if (ImGui::BeginListBox("##ProfileList", ImVec2(-FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 8)))
-    {
-        for (size_t i = 0; i < profiles.size(); ++i)
-        {
-            const Profile &profile = profiles[i];
-            std::string label = profile.label;
-            bool isSelected = (selectedProfile == i);
-
-            if (ImGui::Selectable(profile.label.c_str(), isSelected))
-            {
-                selectedProfile = static_cast<int>(i);
-                shouldScrollToSelected = false;
-            }
-
-            // Apply profile on double-click
-            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0)) // 0 = left mouse button
-            {
-                profileManager.applyProfile(profile);
-                currentProfile = profile.label;
-                initialized = false; // Resync selection next frame
-            }
-
-            // Auto-scroll if selected item is not visible
-            if (isSelected && shouldScrollToSelected && !ImGui::IsItemVisible())
-            {
-                ImGui::SetScrollHereY(0.5f);
-                shouldScrollToSelected = false;
-            }
-        }
-
-        ImGui::EndListBox();
-    }
-    ImGui::PopFont();
+    // Profiles section
+    ProfilesSection(profileManager);
 
     ImGui::Spacing();
     ImGui::Separator();
