@@ -104,6 +104,7 @@
                 "src\\utils\\Theme.cpp",
                 "src\\utils\\VUMeters.cpp",
                 "src\\utils\\SystemUtils.cpp",
+                "src\\utils\\EqualizerAPOManager.cpp",
                 "src\\main.cpp",
                 "build\\resource.res",
                 "/link",
