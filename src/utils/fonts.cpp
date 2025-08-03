@@ -4,6 +4,7 @@
 // Global variable definition
 ImFont* g_SmallFont = nullptr;
 ImFont* g_SmallFontMono = nullptr;
+ImFont* g_unicodeFont = nullptr;
 
 void LoadFonts(float baseFontSize)
 {
@@ -14,6 +15,8 @@ void LoadFonts(float baseFontSize)
     g_SmallFontMono = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 16.0f);
 
     g_SmallFont = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Carlito-Regular.ttf", 16.0f);
+
+    g_unicodeFont = io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\seguisym.ttf", 18.0f);
 
     if (!g_SmallFont)
     {
