@@ -4,10 +4,10 @@
 void Footer()
 {
     // Move to bottom of window
-    ImGui::SetCursorPosY(ImGui::GetWindowHeight() - ImGui::GetTextLineHeightWithSpacing() - 0.0f);
+    ImGui::SetCursorPosY(ImGui::GetWindowHeight() - ImGui::GetTextLineHeightWithSpacing() - 10.0f);
     
     // Draw footer
-    float contentWidth = ImGui::GetContentRegionAvail().x - 10.0f; // Leave some space for padding
+    float contentWidth = ImGui::GetContentRegionAvail().x - 0.0f; // Leave some space for padding
     const char *versionText = "v1.1.0";
     const char *authorText = "Developed by: Grower";
 
