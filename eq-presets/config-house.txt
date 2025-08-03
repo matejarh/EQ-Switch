@@ -22,10 +22,10 @@ Copy: NONE
 
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
-Copy: C=0.25*L+0.25*R    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=0.50*L+0.50*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
-Copy: SL=0.9*1           # Surround Left = L (-1 dB)
-Copy: SR=0.9*2           # Surround Right = R (-1 dB)
+Copy: C=0.25*1+0.25*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
+Copy: LFE=0.50*1+0.50*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: SL=0.7*1           # Surround Left = L (-1 dB)
+Copy: SR=0.7*2           # Surround Right = R (-1 dB)
 
 # --- Tight low-pass filtering for subwoofer ---
 Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
@@ -49,9 +49,7 @@ Filter: ALL PK Fc=8000 Hz Gain=2.5 dB Q=0.8   # Air and sparkle
 
 # --- Tonal shaping ---
 Filter: ALL LS Fc=40 Hz Gain=2.5 dB Q=0.7    # Extra bottom depth
-Filter: ALL HS Fc=10000 Hz Gain=2 dB Q=0.8  # Brilliance
-
-GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
+Filter: ALL HS Fc=10000 Hz Gain=2 dB Q=0.8   # Brilliance
 
 # --- Rear speaker delay for improved surround effect ---
 Delay: SL=20 ms
