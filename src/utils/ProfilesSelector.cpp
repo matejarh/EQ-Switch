@@ -3,9 +3,9 @@
 #include "ProfilesSelector.h"
 #include "fonts.h"
 #include "ProfileManager.h"
-#include <vector>
-#include <EQSwitchWindow.h>
+#include "EQSwitchWindow.h"
 #include "AppLauncher.h"
+#include <vector>
 
 
 int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::string &currentProfile)
