@@ -9,9 +9,11 @@
 #include "utils/VUBuffer.h"
 #include "utils/fonts.h"
 #include "gui/EQSwitchWindow.h"
+#include "utils/EqualizerAPOManager.h"
+#include "utils/Theme.h"
 
 #include "resource.h"
-#include "Theme.h"
+#include <iostream>
 
 // Global Direct3D device
 static ID3D11Device *g_pd3dDevice = nullptr;
@@ -22,16 +24,13 @@ static HWND g_hWnd = nullptr;
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-// Global paths
+// Default global configuration paths
 std::string configDir = "C:\\Program Files\\EqualizerAPO\\config";
 std::string profilesDir = "..\\eq-presets\\";
 std::string configTarget = configDir + "\\config.txt";
 
-// Global VU buffer and audio capture
-constexpr int NUM_CHANNELS = 6;
-VUBuffer gVUBuffer(NUM_CHANNELS);
-AudioCapture gAudioCapture(gVUBuffer);
-ProfileManager gProfileManager(profilesDir, configTarget);
+// Global Equalizer APO manager instance
+auto &apoManager = EqualizerAPOManager::getInstance();
 
 // Forward declarations
 bool CreateDeviceD3D(HWND hWnd);
@@ -135,6 +134,12 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
+    // Initialize Equalizer APO manager
+    if (apoManager.detectInstallation())
+    {
+        std::string configTarget = apoManager.getConfigDir() + "\\config.txt";
+    }
+
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{0, 0}, MONITOR_DEFAULTTOPRIMARY));
 
@@ -178,13 +183,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     style.ScaleAllSizes(main_scale); // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
     style.FontScaleDpi = main_scale; // Set initial font scale. (using io.ConfigDpiScaleFonts=true makes this unnecessary. We leave both here for documentation purpose)
 
-    
     // Setup Dear ImGui style
     // ApplyEQSwitchDarkTheme();
     ApplyVSCodeDarkModernTheme();
 
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
+
+    // Global VU buffer and audio capture
+    constexpr int NUM_CHANNELS = 6;
+    VUBuffer gVUBuffer(NUM_CHANNELS);
+    AudioCapture gAudioCapture(gVUBuffer);
+    ProfileManager gProfileManager(profilesDir, configTarget);
 
     // Start audio capture
     gAudioCapture.start();
