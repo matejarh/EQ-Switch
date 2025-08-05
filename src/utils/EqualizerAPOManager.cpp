@@ -13,12 +13,24 @@
 
 namespace fs = std::filesystem;
 
+/**
+ * @brief Singleton instance getter for EqualizerAPOManager.
+ * 
+ * @return EqualizerAPOManager& 
+ */
 EqualizerAPOManager &EqualizerAPOManager::getInstance()
 {
     static EqualizerAPOManager instance;
     return instance;
 }
 
+/**
+ * @brief  Checks the status of Equalizer APO installation and profiles folder accessibility.
+ * This method performs the following checks:
+ * - Detects if Equalizer APO is installed.
+ * - Checks if the profiles folder is accessible.
+ * - Checks if the LaunchEditor.bat file is available.
+ */
 void EqualizerAPOManager::checkSection()
 {
     // Perform checks
@@ -82,9 +94,24 @@ void EqualizerAPOManager::checkSection()
     ImGui::PopFont();
 }
 
-// Attempts to detect the installation path
-// Checks common installation directories for the presence of Equalizer APO files
-// Returns true if a valid installation is found, false otherwise
+/**
+ * @brief Detects the installation of Equalizer APO on a 64-bit Windows system.
+ *
+ * This method attempts to locate the Equalizer APO installation by querying the Windows registry.
+ * It checks the 64-bit registry path:
+ *   - HKEY_LOCAL_MACHINE\SOFTWARE\EqualizerAPO
+ *
+ * If the registry key is found and contains valid values for:
+ *   - "InstallDir" – the root installation path of Equalizer APO
+ *   - "ConfigPath" – the path to the configuration directory
+ *
+ * then the method caches the following:
+ *   - installPath – installation root directory
+ *   - configPath – configuration directory (target for `config.txt`)
+ *   - editorPath – path to `Editor.exe` inside the installation folder
+ *
+ * @return true if a valid Equalizer APO installation is detected and cached, false otherwise.
+ */
 bool EqualizerAPOManager::detectInstallation()
 {
     HKEY hKey;
@@ -158,17 +185,36 @@ bool EqualizerAPOManager::detectInstallation()
     return false;
 }
 
+/**
+ * @brief Checks whether the given path is a valid Equalizer APO installation.
+ *
+ * This function validates the installation by checking if the expected configuration
+ * file (`config.txt`) exists in the `config` subdirectory of the provided path.
+ *
+ * @param path The base installation directory to check.
+ * @return true if the `config\\config.txt` file exists under the given path, false otherwise.
+ */
 bool EqualizerAPOManager::isValidInstall(const std::string &path)
 {
     std::string config = path + "\\config\\config.txt";
     return PathFileExistsA(config.c_str());
 }
 
+/**
+ * @brief Returns the configuration directory for Equalizer APO.
+ * 
+ * @return std::string 
+ */
 std::string EqualizerAPOManager::getConfigDir() const
 {
     return configPath;
 }
 
+/**
+ * @brief Returns the path to the Equalizer APO Editor executable.
+ * 
+ * @return std::string 
+ */
 std::string EqualizerAPOManager::getEditorPath() const
 {
     return editorPath;
