@@ -7,7 +7,6 @@
 #include "AppLauncher.h"
 #include <vector>
 
-
 int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::string &currentProfile)
 {
     for (int i = 0; i < profiles.size(); ++i)
@@ -20,6 +19,12 @@ int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::str
 
 void ProfilesSection(ProfileManager &profileManager, std::string &currentProfileOut, int &selectedProfileOut, bool *p_exit)
 {
+    // --- Status message for profile apply ---
+    static std::string statusMessage;
+    static float statusMessageTimer = 0.0f; // in seconds
+    static float statusAlpha = 0.0f;
+    static const float fadeDuration = 0.5f; // seconds for fade-in/out
+
     static std::vector<Profile> profiles = profileManager.loadProfiles();
     static std::string currentProfile = profileManager.getCurrentProfile();
     static int selectedProfile = -1;
@@ -56,6 +61,10 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
                 profileManager.applyProfile(profile);
                 currentProfile = profile.label;
                 initialized = false;
+
+                // Set feedback message
+                statusMessage = "✔ Profile \"" + profile.label + "\" applied.";
+                statusMessageTimer = 3.0f; // show message for 3 seconds
             }
 
             // Scroll if needed
@@ -82,6 +91,11 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
             profileManager.applyProfile(profile);
             currentProfile = profile.label; // Optional: update display
             initialized = false;            // Resync selection next frame
+
+            // Set feedback message
+            statusMessage = "✔ Profile \"" + profile.label + "\" applied.";
+            statusMessageTimer = 3.0f; // show message for 3 seconds
+            statusAlpha = 0.0f;        // Start fade-in
         }
     }
 
@@ -102,7 +116,39 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
     ImGui::Separator();
     ImGui::Spacing();
 
+    // Show status message (if any)
+    if (!statusMessage.empty() && statusMessageTimer > 0.0f)
+    {
+        float deltaTime = ImGui::GetIO().DeltaTime;
+
+        // Fade in
+        if (statusAlpha < 1.0f && statusMessageTimer > 2.5f)
+        {
+            statusAlpha += deltaTime / fadeDuration;
+            if (statusAlpha > 1.0f)
+                statusAlpha = 1.0f;
+        }
+
+        // Fade out
+        if (statusMessageTimer < 1.0f)
+        {
+            statusAlpha -= deltaTime / fadeDuration;
+            if (statusAlpha < 0.0f)
+                statusAlpha = 0.0f;
+        }
+
+        statusMessageTimer -= deltaTime;
+        ImGui::PushFont(g_unicodeFont);
+        ImVec4 textColor = ImVec4(0.2f, 0.8f, 0.2f, statusAlpha); // Green with alpha
+        ImGui::PushStyleColor(ImGuiCol_Text, textColor);
+        ImGui::TextWrapped("%s", statusMessage.c_str());
+        ImGui::PopStyleColor();
+        ImGui::PopFont();
+    }
+
     // Output updated values
     currentProfileOut = currentProfile;
     selectedProfileOut = selectedProfile;
+    // statusMessageOut = statusMessage;
+    // statusMessageTimerOut = statusMessageTimer;
 }
