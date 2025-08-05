@@ -5,6 +5,8 @@ class EqualizerAPOManager {
 public:
     static EqualizerAPOManager& getInstance();
 
+    void checkSection();
+
     // Attempts to detect the installation path
     bool detectInstallation();
 
