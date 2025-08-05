@@ -31,7 +31,6 @@ std::string configDir = "C:\\Program Files\\EqualizerAPO\\config";
 std::string profilesDir = "..\\eq-presets\\";
 std::string configTarget = apoManager.getConfigDir() + "\\config.txt";
 
-
 // Forward declarations
 bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
@@ -134,11 +133,11 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-    // Initialize Equalizer APO manager
-    if (apoManager.detectInstallation())
-    {
-        std::string configTarget = apoManager.getConfigDir() + "\\config.txt";
-    }
+#ifndef NDEBUG
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
+#endif
 
     ImGui_ImplWin32_EnableDpiAwareness();
     float main_scale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{0, 0}, MONITOR_DEFAULTTOPRIMARY));
@@ -190,12 +189,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
+    // Initialize Equalizer APO manager
+    if (apoManager.detectInstallation())
+    {
+        configTarget = apoManager.getConfigDir() + "\\config.txt";
+    }
     // Global VU buffer and audio capture
     constexpr int NUM_CHANNELS = 6;
     VUBuffer gVUBuffer(NUM_CHANNELS);
     AudioCapture gAudioCapture(gVUBuffer);
     ProfileManager gProfileManager(profilesDir, configTarget);
-
+    
     // Start audio capture
     gAudioCapture.start();
 
@@ -216,7 +220,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, main_scale);
+        ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, main_scale, apoManager);
 
         ImGui::Render();
         const float clear_color_with_alpha[4] = {0.1f, 0.1f, 0.1f, 1.0f};
