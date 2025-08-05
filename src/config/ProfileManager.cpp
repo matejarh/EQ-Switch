@@ -10,6 +10,7 @@ namespace fs = std::filesystem;
 ProfileManager::ProfileManager(const string &profilesDir, const string &configTarget)
     : profilesDir(profilesDir), configTarget(configTarget) {}
 
+
 vector<Profile> ProfileManager::loadProfiles() const
 {
     vector<Profile> profiles;
@@ -66,18 +67,16 @@ bool ProfileManager::copyFile(const string &src, const string &dest)
     return true;
 }
 
-void ProfileManager::restartEqualizerAPO()
-{
-    system("net stop \"Equalizer APO\" >nul 2>&1");
-    system("net start \"Equalizer APO\" >nul 2>&1");
-}
 
 bool ProfileManager::applyProfile(const Profile &p)
 {
+    std::cout << "Applying profile: " << p.label << "\n";
     string srcFile = profilesDir + p.filename;
+    std::cout << "Source: " << srcFile << "\n";
+    std::cout << "Target: " << configTarget << "\n";
+
     if (copyFile(srcFile, configTarget))
     {
-        restartEqualizerAPO();
         return true;
     }
     return false;

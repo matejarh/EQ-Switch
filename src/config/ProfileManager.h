@@ -20,7 +20,6 @@ public:
 
 private:
     bool copyFile(const std::string &src, const std::string &dest);
-    void restartEqualizerAPO();
 
     std::string profilesDir;
     std::string configTarget;
