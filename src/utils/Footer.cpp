@@ -1,7 +1,8 @@
 #include <imgui.h>
 #include "fonts.h"
+#include "EqualizerAPOManager.h"
 
-void Footer()
+void Footer(EqualizerAPOManager &apoManager)
 {
     // Move to bottom of window
     ImGui::SetCursorPosY(ImGui::GetWindowHeight() - ImGui::GetTextLineHeightWithSpacing() - 10.0f);
@@ -16,6 +17,8 @@ void Footer()
     ImGui::PushFont(g_SmallFont);
     // Left-aligned version
     ImGui::Text("%s", versionText);
+    ImGui::SameLine();
+    apoManager.checkSection(); // Check APO installation and profiles
 
     // Right-aligned author
     ImGui::SameLine(contentWidth - ImGui::CalcTextSize(authorText).x);

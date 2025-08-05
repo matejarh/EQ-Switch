@@ -16,9 +16,9 @@
 
 void ShowEQSwitchWindow(ProfileManager &profileManager,
                         VUBuffer &vuBuffer,
-                        bool *p_exit, float main_scale)
+                        bool *p_exit, float main_scale,
+                        EqualizerAPOManager &apoManager)
 {
-    auto &apoManager = EqualizerAPOManager::getInstance();
     static bool showMissingAPOPopup = false;
 
     // Check if APO is detected and trigger popup
@@ -133,54 +133,18 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::TextColored(ImVec4(0.325f, 0.557f, 0.796f, 1.0f), "%s", currentProfile.c_str());
     ImGui::Separator();
     ImGui::Spacing();
-    
+
     // VU Meters section
     VUMetersSection(vuBuffer, main_scale);
-    
+
     ImGui::Spacing();
-    
+
     // Profile selection section
     ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit);
 
-    ImGui::PushFont(g_SmallFont);
-    if (!apoManager.detectInstallation())
-    {
-        ImGui::Separator();
-        ImGui::Spacing();
-        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Equalizer APO is not installed or not accessible.");
-        ImGui::Text("Please install Equalizer APO to use this application.");
-    }
-    /*     else
-    {
-        ImGui::Text("Equalizer APO is installed and accessible.");
-        } */
-    if (!IsProfilesFolderAccessible())
-    {
-        ImGui::Separator();
-        ImGui::Spacing();
-        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Profiles folder is not accessible.");
-        ImGui::Text("Please check the permissions of the profiles folder.");
-    }
-    /*     else
-    {
-        ImGui::Text("Profiles folder is accessible.");
-        } */
-    if (!IsLaunchEditorBatAvailable())
-    {
-        ImGui::Separator();
-        ImGui::Spacing();
-        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Launch Editor batch file is not available.");
-        ImGui::Text("Please ensure the launch editor script is present in the application directory.");
-    }
-    /*     else
-        {
-            ImGui::Text("Launch Editor batch file is available.");
-        } */
-    ImGui::PopFont();
-
     ImGui::Spacing();
 
-    Footer();
+    Footer(apoManager);
 
     ImGui::End();
 }
