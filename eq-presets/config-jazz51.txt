@@ -1,4 +1,4 @@
-# EQ Profile: Jazz Listening Preset
+# EQ Profile: Jazz Music Preset
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +3 dB
 # Surrounds gently enhanced for ambience

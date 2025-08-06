@@ -1,4 +1,4 @@
-# EQ Profile: Stereo Movie Preset from Stereo to 5.1
+# EQ Profile: Stereo Movies Preset from Stereo to 5.1
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +3 dB for cinematic bass
 # Surrounds slightly softened for ambient effects

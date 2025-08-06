@@ -1,4 +1,4 @@
-# EQ Profile: Drum and Bass from Stereo to 5.1
+# EQ Profile: Drum and Bass Music Preset from Stereo to 5.1
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +6 dB for deep bass impact
 # Routing from stereo source to 5.1 speakers

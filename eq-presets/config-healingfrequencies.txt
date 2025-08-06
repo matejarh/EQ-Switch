@@ -1,4 +1,4 @@
-# EQ Profile: Healing Frequencies Preset from Stereo to 5.1
+# EQ Profile: Healing Frequencies Music Preset from Stereo to 5.1
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +3 dB
 # Ambient surrounds for healing environment

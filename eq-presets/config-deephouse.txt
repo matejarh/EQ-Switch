@@ -33,11 +33,11 @@ Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
 Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
+Filter: ON L  HP Fc=100 Hz Q=0.7             # Cut low-end from front L
+Filter: ON R  HP Fc=100 Hz Q=0.7             # Cut low-end from front R
+Filter: ON C  HP Fc=100 Hz Q=0.7             # Cut low-end from center
+Filter: ON SL HP Fc=100 Hz Q=0.7             # Cut low-end from rear L
+Filter: ON SR HP Fc=100 Hz Q=0.7             # Cut low-end from rear R
 
 
 # --- Deep House Tonal Enhancements ---
@@ -56,8 +56,6 @@ Filter: ALL HS Fc=9500 Hz Gain=2 dB Q=0.8    # Sparkle and openness
 # --- Tonal shaping ---
 Filter: ALL LS Fc=40 Hz Gain=2.5 dB Q=0.7    # Extra bottom depth
 Filter: ALL HS Fc=10000 Hz Gain=2 dB Q=0.8  # Brilliance
-
-GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
 
 # --- Rear speaker delay for improved surround effect ---
 Delay: SL=20 ms

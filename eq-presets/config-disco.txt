@@ -33,11 +33,11 @@ Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
 Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7
-Filter: ON R  HP Fc=80 Hz Q=0.7
-Filter: ON C  HP Fc=80 Hz Q=0.7
-Filter: ON SL HP Fc=80 Hz Q=0.7
-Filter: ON SR HP Fc=80 Hz Q=0.7
+Filter: ON L  HP Fc=100 Hz Q=0.7
+Filter: ON R  HP Fc=100 Hz Q=0.7
+Filter: ON C  HP Fc=100 Hz Q=0.7
+Filter: ON SL HP Fc=100 Hz Q=0.7
+Filter: ON SR HP Fc=100 Hz Q=0.7
 
 # --- Disco Tonal Enhancements ---
 Filter: ALL PK Fc=50 Hz Gain=3.0 dB Q=1.0     # Deep bass bump (kick & bass guitar)

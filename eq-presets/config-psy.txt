@@ -1,4 +1,4 @@
-# EQ Profile: Psy Trance Preset from Stereo to 5.1
+# EQ Profile: Psy Trance Music Preset from Stereo to 5.1
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +3 dB for powerful bass
 # Surrounds balanced for psychedelic spatial effects
