@@ -17,7 +17,7 @@ int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::str
     return -1;
 }
 
-void ProfilesSection(ProfileManager &profileManager, std::string &currentProfileOut, int &selectedProfileOut, bool *p_exit)
+void ProfilesSection(ProfileManager &profileManager, std::string &currentProfileOut, int &selectedProfileOut, bool *p_exit, EqualizerAPOManager &apoManager)
 {
     // --- Status message for profile apply ---
     static std::string statusMessage;
@@ -55,6 +55,13 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
                 shouldScrollToSelected = false;
             }
 
+            // Tooltip on hover
+            if (ImGui::IsItemHovered())
+            {
+                std::string tooltip = "Doubleclick to apply \"" + profile.label + "\"";
+                ImGui::SetTooltip("%s", tooltip.c_str());
+            }
+
             // Apply profile on double-click
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
             {
@@ -64,7 +71,7 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
 
                 // Set feedback message
                 statusMessage = "✔ Profile \"" + profile.label + "\" applied.";
-                statusMessageTimer = 3.0f; // show message for 3 seconds
+                statusMessageTimer = 5.0f; // show message for 3 seconds
             }
 
             // Scroll if needed
@@ -83,6 +90,8 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
     ImGui::Separator();
     ImGui::Spacing();
 
+    ImGui::BeginGroup();
+
     if (ImGui::Button("Apply"))
     {
         if (selectedProfile >= 0 && selectedProfile < (int)profiles.size())
@@ -94,15 +103,16 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
 
             // Set feedback message
             statusMessage = "✔ Profile \"" + profile.label + "\" applied.";
-            statusMessageTimer = 3.0f; // show message for 3 seconds
+            statusMessageTimer = 5.0f; // show message for 5 seconds
             statusAlpha = 0.0f;        // Start fade-in
         }
     }
 
     ImGui::SameLine();
+
     if (ImGui::Button("Open Editor"))
     {
-        launchEditor();
+        launchEditor(apoManager.getEditorPath(), apoManager.getInstallDir());
     }
 
     ImGui::SameLine();
@@ -112,9 +122,7 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
             *p_exit = true;
     }
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::Spacing();
+    float contentWidth = ImGui::GetContentRegionAvail().x - 0.0f;
 
     // Show status message (if any)
     if (!statusMessage.empty() && statusMessageTimer > 0.0f)
@@ -141,10 +149,17 @@ void ProfilesSection(ProfileManager &profileManager, std::string &currentProfile
         ImGui::PushFont(g_unicodeFont);
         ImVec4 textColor = ImVec4(0.2f, 0.8f, 0.2f, statusAlpha); // Green with alpha
         ImGui::PushStyleColor(ImGuiCol_Text, textColor);
+        ImGui::SameLine(contentWidth - ImGui::CalcTextSize(statusMessage.c_str()).x);
         ImGui::TextWrapped("%s", statusMessage.c_str());
         ImGui::PopStyleColor();
         ImGui::PopFont();
     }
+
+    ImGui::EndGroup();
+
+    ImGui::Spacing();
+    ImGui::Separator();
+    ImGui::Spacing();
 
     // Output updated values
     currentProfileOut = currentProfile;
