@@ -13,13 +13,19 @@
 #include <windows.h>
 #include <Footer.h>
 #include <VUMetersSection.h>
+/* #include <d3d11.h> */
+
 
 void ShowEQSwitchWindow(ProfileManager &profileManager,
                         VUBuffer &vuBuffer,
                         bool *p_exit, float main_scale,
-                        EqualizerAPOManager &apoManager)
+                        EqualizerAPOManager &apoManager/* ,
+                        ID3D11ShaderResourceView* iconTexture */)
 {
     static bool showMissingAPOPopup = false;
+
+/*     // Load icon texture from resource
+    static ID3D11ShaderResourceView* myIconTexture = nullptr; */
 
     // Check if APO is detected and trigger popup
     static bool apoChecked = false;
@@ -122,7 +128,29 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
     ImGui::PushFont(g_SmallFont);
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
-    ImGui::TextWrapped("EQ Switch lets you preview and activate Equalizer APO profiles.\nUseful for routing stereo to 5.1 and testing spatial setups.");
+    ImGui::BeginGroup();
+
+    ImGui::PushFont(g_unicodeFont);
+    ImGui::BeginGroup(); // Text block
+    ImGui::TextWrapped(
+        "EQ Switch is a utility for managing and activating Equalizer APO profiles.\n\n"
+        "• Quickly preview and apply profiles from a list.\n"
+        "• Especially useful for converting stereo output to 5.1 speaker setups.\n"
+        "• Automatically copies selected profile to Equalizer APO's config.txt.\n"
+        "• Double-click a profile to apply it instantly.\n"
+        "• Use the VU meters to visualize per-channel audio levels.\n\n"
+        "Make sure Equalizer APO is installed and your profiles are placed in the 'eq-presets' folder.");
+    ImGui::EndGroup();
+    ImGui::PopFont();
+    ImGui::SameLine();
+
+/*     if (iconTexture)
+    {
+        ImGui::Image((void *)iconTexture, ImVec2(128, 128)); // Adjust size as needed
+    }
+     */
+
+    ImGui::EndGroup();
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
@@ -140,7 +168,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
 
     // Profile selection section
-    ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit);
+    ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit, apoManager);
 
     ImGui::Spacing();
 
