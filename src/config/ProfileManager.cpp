@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <iostream>
 #include <Windows.h>
+/* #include <Shlwapi.h> */
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -82,8 +83,8 @@ bool ProfileManager::applyProfile(const Profile &p)
     return false;
 }
 
-bool ProfileManager::launchEditor()
+/* bool ProfileManager::launchEditor()
 {
     ShellExecuteW(NULL, L"open", L"launch_editor.bat", NULL, NULL, SW_SHOWNORMAL);
     return true;
-}
+} */

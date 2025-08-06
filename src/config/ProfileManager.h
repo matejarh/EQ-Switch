@@ -16,7 +16,7 @@ public:
     std::vector<Profile> loadProfiles() const;
     std::string getCurrentProfile() const;
     bool applyProfile(const Profile &p);
-    bool launchEditor();
+    // bool launchEditor();
 
 private:
     bool copyFile(const std::string &src, const std::string &dest);
