@@ -15,17 +15,18 @@
 #include <VUMetersSection.h>
 /* #include <d3d11.h> */
 
-
 void ShowEQSwitchWindow(ProfileManager &profileManager,
                         VUBuffer &vuBuffer,
                         bool *p_exit, float main_scale,
-                        EqualizerAPOManager &apoManager/* ,
-                        ID3D11ShaderResourceView* iconTexture */)
+                        EqualizerAPOManager &apoManager /* ,
+                         ID3D11ShaderResourceView* iconTexture */
+)
 {
     static bool showMissingAPOPopup = false;
+    static bool showMissingProfilesDirPopup = false;
 
-/*     // Load icon texture from resource
-    static ID3D11ShaderResourceView* myIconTexture = nullptr; */
+    /*     // Load icon texture from resource
+        static ID3D11ShaderResourceView* myIconTexture = nullptr; */
 
     // Check if APO is detected and trigger popup
     static bool apoChecked = false;
@@ -36,6 +37,11 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
         {
             showMissingAPOPopup = true;
         }
+    }
+    // Check if profiles directory is accessible
+    if (!IsProfilesFolderAccessible(apoManager.getProfilesDir()))
+    {
+        showMissingProfilesDirPopup = true;
     }
 
     static std::vector<Profile> profiles = profileManager.loadProfiles();
@@ -64,7 +70,22 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
         // showMissingAPOPopup = false; // Trigger only once
     }
 
-    // Centered modal
+    if (showMissingProfilesDirPopup)
+    {
+        ShowStyledModalPopup(
+            "⚠ MissingProfilesDir",
+            "Missing Profiles Directory",
+            "The profiles directory is not accessible.\n",
+            false,
+            false,
+            []()
+            {
+                PostQuitMessage(0); // Exit on close
+            });
+        // showMissingProfilesDirPopup = false; // Trigger only once
+    }
+
+/*     // Centered modal
     ImGui::SetNextWindowSize(ImVec2(400, 0), ImGuiCond_Always);
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
@@ -116,7 +137,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     }
     ImGui::PopFont(); // Pop unicode font
 
-    ImGui::PopStyleColor(3); // Restore colors
+    ImGui::PopStyleColor(3); // Restore colors */
 
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
@@ -144,11 +165,11 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::PopFont();
     ImGui::SameLine();
 
-/*     if (iconTexture)
-    {
-        ImGui::Image((void *)iconTexture, ImVec2(128, 128)); // Adjust size as needed
-    }
-     */
+    /*     if (iconTexture)
+        {
+            ImGui::Image((void *)iconTexture, ImVec2(128, 128)); // Adjust size as needed
+        }
+         */
 
     ImGui::EndGroup();
     ImGui::PopStyleColor();
@@ -168,7 +189,8 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
     ImGui::Spacing();
 
     // Profile selection section
-    ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit, apoManager);
+    if (IsProfilesFolderAccessible(apoManager.getProfilesDir()))
+        ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit, apoManager);
 
     ImGui::Spacing();
 
