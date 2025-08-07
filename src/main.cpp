@@ -28,8 +28,7 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 // Global Equalizer APO manager instance
 auto &apoManager = EqualizerAPOManager::getInstance();
 // Default global configuration paths
-std::string configDir = "C:\\Program Files\\EqualizerAPO\\config";
-// std::string profilesDir = "..\\eq-presets\\";
+std::string configDir = apoManager.getConfigDir();
 std::string profilesDir = apoManager.getProfilesDir();
 std::string configTarget = apoManager.getConfigDir() + "\\config.txt";
 
@@ -38,74 +37,6 @@ bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void CreateRenderTarget();
 void CleanupRenderTarget();
-
-/* #include <Windows.h>
-#include <d3d11.h>
-#include <wrl/client.h> // for Microsoft::WRL::ComPtr
-using Microsoft::WRL::ComPtr;
-
-// Helper function to create a shader resource from icon resource
-bool CreateTextureFromIconResource(ID3D11Device *device, HINSTANCE hInstance, int resourceID, ID3D11ShaderResourceView **outSRV)
-{
-    // Load icon from resource
-    HICON hIcon = (HICON)LoadIcon(hInstance, MAKEINTRESOURCE(resourceID));
-    if (!hIcon)
-        return false;
-
-    ICONINFO iconInfo;
-    if (!GetIconInfo(hIcon, &iconInfo))
-        return false;
-
-    BITMAP bmpColor;
-    GetObject(iconInfo.hbmColor, sizeof(BITMAP), &bmpColor);
-
-    int width = bmpColor.bmWidth;
-    int height = bmpColor.bmHeight;
-
-    // Create D3D11 texture description
-    D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = width;
-    desc.Height = height;
-    desc.MipLevels = 1;
-    desc.ArraySize = 1;
-    desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-    desc.SampleDesc.Count = 1;
-    desc.Usage = D3D11_USAGE_DYNAMIC;
-    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-    ComPtr<ID3D11Texture2D> texture;
-    HRESULT hr = device->CreateTexture2D(&desc, nullptr, &texture);
-    if (FAILED(hr))
-        return false;
-
-    // Copy pixel data from icon to texture
-    D3D11_MAPPED_SUBRESOURCE mapped = {};
-    ComPtr<ID3D11DeviceContext> context;
-    device->GetImmediateContext(&context);
-    context->Map(texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
-
-    // Create compatible DC and copy pixels
-    HDC hdcScreen = GetDC(NULL);
-    HDC hdcMem = CreateCompatibleDC(hdcScreen);
-    HBITMAP hOldBmp = (HBITMAP)SelectObject(hdcMem, iconInfo.hbmColor);
-    BitBlt(hdcMem, 0, 0, width, height, hdcMem, 0, 0, SRCCOPY);
-    GetBitmapBits(iconInfo.hbmColor, width * height * 4, mapped.pData);
-    SelectObject(hdcMem, hOldBmp);
-    DeleteDC(hdcMem);
-    ReleaseDC(NULL, hdcScreen);
-
-    context->Unmap(texture.Get(), 0);
-
-    // Create shader resource view
-    D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-    srvDesc.Format = desc.Format;
-    srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-    srvDesc.Texture2D.MipLevels = 1;
-
-    hr = device->CreateShaderResourceView(texture.Get(), &srvDesc, outSRV);
-    return SUCCEEDED(hr);
-} */
 
 // Direct3D and Win32 helpers
 bool CreateDeviceD3D(HWND hWnd)
