@@ -6,14 +6,18 @@ bool IsEqualizerAPOInstalled()
     return std::filesystem::exists(path);
 }
 
-bool IsProfilesFolderAccessible()
+bool IsProfilesFolderAccessible(std::string profilesDir)
 {
-    const std::wstring path = L"..\\eq-presets\\";
-    return std::filesystem::exists(path);
+    return std::filesystem::exists(profilesDir);
 }
 
 bool IsLaunchEditorBatAvailable()
 {
     const std::wstring path = L"launch_editor.bat";
     return std::filesystem::exists(path);
+}
+
+bool editorexeIsAvailableAt(std::string editorPath)
+{
+    return std::filesystem::exists(editorPath);
 }
