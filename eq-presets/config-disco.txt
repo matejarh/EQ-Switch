@@ -34,7 +34,7 @@ Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
 Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Channel: L R C SL SR
+Channel: L R C RL RR SL SR
 Filter: ON HP Fc 100 Hz Q 0.7
 
 # --- Disco Tonal Enhancements ---
