@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -3.5 dB
+Preamp: -3.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -27,40 +27,36 @@ Copy: LFE=1.41*L+1.41*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: SL=1               # Surround Left = L
 Copy: SR=2               # Surround Right = R
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+# --- Subwoofer cleanup and low-pass filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7             # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
-
+Channel: L R C SL SR
+Filter: ON HP Fc 80 Hz Q 0.7
 
 # --- Healing Frequencies Boost ---
-Filter: ALL PK Fc=174 Hz Gain=3 dB Q=1.0
-Filter: ALL PK Fc=285 Hz Gain=3 dB Q=1.0
-Filter: ALL PK Fc=396 Hz Gain=3 dB Q=1.0
-Filter: ALL PK Fc=417 Hz Gain=3 dB Q=1.0
-Filter: ALL PK Fc=528 Hz Gain=3.5 dB Q=1.0
-Filter: ALL PK Fc=639 Hz Gain=2.5 dB Q=1.0
-Filter: ALL PK Fc=741 Hz Gain=2 dB Q=1.0
-Filter: ALL PK Fc=852 Hz Gain=2 dB Q=1.0
-Filter: ALL PK Fc=963 Hz Gain=2 dB Q=1.0
+Channel: all
+Filter: ON PK Fc 174 Hz Gain 3 dB Q 1.0
+Filter: ON PK Fc 285 Hz Gain 3 dB Q 1.0
+Filter: ON PK Fc 396 Hz Gain 3 dB Q 1.0
+Filter: ON PK Fc 417 Hz Gain 3 dB Q 1.0
+Filter: ON PK Fc 528 Hz Gain 3.5 dB Q 1.0
+Filter: ON PK Fc 639 Hz Gain 2.5 dB Q 1.0
+Filter: ON PK Fc 741 Hz Gain 2 dB Q 1.0
+Filter: ON PK Fc 852 Hz Gain 2 dB Q 1.0
+Filter: ON PK Fc 963 Hz Gain 2 dB Q 1.0
 
 # --- Optional gentle wave enhancements ---
-Filter: ALL PK Fc=4 Hz Gain=1.5 dB Q=0.5
-Filter: ALL PK Fc=8 Hz Gain=1.5 dB Q=0.5
+Filter: ON PK Fc 4 Hz Gain 1.5 dB Q 0.5
+Filter: ON PK Fc 8 Hz Gain 1.5 dB Q 0.5
 
 # --- Warmth and clarity ---
-Filter: ALL LS Fc=60 Hz Gain=2 dB Q=0.7
-Filter: ALL HS Fc=8000 Hz Gain=1.5 dB Q=0.8
-
-GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 0; 1000 0; 1600 0; 2500 4.1; 4000 4.7; 6300 4.4; 10000 2.8; 16000 0
+Filter: ON LS Fc 60 Hz Gain 2 dB Q 0.7
+Filter: ON HS Fc 8000 Hz Gain 1.5 dB Q 0.8
 
 # --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+Channel: SL SR
+Delay: 20 ms

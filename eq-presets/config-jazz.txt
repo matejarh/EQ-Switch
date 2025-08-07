@@ -23,7 +23,7 @@ Copy: NONE
 # --- Stereo routing ---
 Copy: L=1 R=2                            # Front Left/Right
 Copy: C=0.23*1+0.23*2                    # Center = L+R attenuated by ~-7 dB
-Copy: LFE=0.70*1+0.70*2                  # Subwoofer = L+R boosted by ~+3 dB
+Copy: LFE=1.41*1+1.41*2                  # Subwoofer = L+R boosted by ~+3 dB
 Copy: SL=0.80*1                          # Surround Left = L (-2 dB)
 Copy: SR=0.80*2                          # Surround Right = R (-2 dB)
 

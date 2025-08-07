@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -3 dB
+Preamp: -3.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -23,17 +23,19 @@ Copy: NONE
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
 Copy: C=0.25*1+0.25*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=0.50*1+0.50*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: LFE=1.41*1+1.41*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: SL=0.7*1           # Surround Left = L (-1 dB)
 Copy: SR=0.7*2           # Surround Right = R (-1 dB)
 
+# --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE
-Filter: ON HP Fc 25 Hz
-Filter: ON LP Fc 100 Hz
-Filter: ON LP Fc 100 Hz
+Filter: ON HP Fc 25 Hz Q 0.7             # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
-Channel: L R C RL RR
-Filter: ON HP Fc 100 Hz
+# --- High-pass filtering to offload low frequencies from mains ---
+Channel: L R C SL SR
+Filter: ON HP Fc 80 Hz Q 0.7
 
 # --- House Tonal Enhancements ---
 Channel: all

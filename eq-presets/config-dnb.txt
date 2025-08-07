@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -4.5 dB
+Preamp: -4.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -27,27 +27,29 @@ Copy: LFE=2*L+2*R              # Subwoofer = L+R boosted by +6 dB (2 ≈ +6 dB)
 Copy: SL=1                     # Surround Left = L
 Copy: SR=2                     # Surround Right = R
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+# --- Subwoofer cleanup and low-pass filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7             # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
-
+Channel: L R C SL SR
+Filter: ON HP Fc 100 Hz Q 0.7
 
 # --- EQ for Drum and Bass ---
-Filter: LFE LS Fc=50 Hz Gain=8 dB Q=0.7           # Deep bass boost on subwoofer
-Filter: C PK Fc=150 Hz Gain=3 dB Q=1.0             # Kick presence on center
-Filter: ALL PK Fc=500 Hz Gain=2 dB Q=1.0           # Bass body and drum warmth
-Filter: ALL PK Fc=2000 Hz Gain=3 dB Q=1.2          # Snare and cymbal clarity
-Filter: ALL HS Fc=8000 Hz Gain=2 dB Q=0.8        # Crisp highs for detail
-Filter: ALL LS Fc=100 Hz Gain=1.5 dB Q=0.7        # Tight low control on all channels
+Channel: LFE
+Filter: ON LS Fc 50 Hz Gain 8 dB Q 0.7             # Deep bass boost on subwoofer
+
+Channel: C
+Filter: ON PK Fc 150 Hz Gain 3 dB Q 1.0            # Kick presence on center
+
+Channel: all
+Filter: ON PK Fc 500 Hz Gain 2 dB Q 1.0           # Bass body and drum warmth
+Filter: ON PK Fc 2000 Hz Gain 3 dB Q 1.2          # Snare and cymbal clarity
+Filter: ON HS Fc 8000 Hz Gain 2 dB Q 0.8          # Crisp highs for detail
+Filter: ON LS Fc 100 Hz Gain 1.5 dB Q 0.7         # Tight low control on all channels
 
 # --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+Channel: SL SR
+Delay: 20 ms
