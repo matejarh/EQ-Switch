@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <iostream>
 #include <Windows.h>
-/* #include <Shlwapi.h> */
 
 using namespace std;
 namespace fs = std::filesystem;
