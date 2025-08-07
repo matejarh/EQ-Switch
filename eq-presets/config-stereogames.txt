@@ -15,40 +15,40 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -3.5 dB
+Preamp: -3.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo to 5.1 routing ---
-Copy: L=1 R=2                  # Front Left/Right
-Copy: C=0.45*L+0.45*R          # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=1.58*L+1.58*R        # Subwoofer = L+R boosted by +4 dB (1.58 ≈ +4 dB)
-Copy: SL=0.56*1                     # Surround Left = L
-Copy: SR=0.56*2                     # Surround Right = R
+Copy: L=1 R=2                          # Front Left / Right
+Copy: C=0.45*1+0.45*2                  # Center = L+R attenuated by ~7 dB
+Copy: LFE=1.58*1+1.58*2                # Subwoofer = L+R boosted by ~+4 dB
+Copy: SL=0.56*1                        # Surround Left = L (~-5 dB)
+Copy: SR=0.56*2                        # Surround Right = R (~-5 dB)
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+# --- Subwoofer filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7          # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6         # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6         # 2nd stage for 24 dB/oct rolloff
 
-# --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
+# --- High-pass filtering for all mains ---
+Channel: L R C SL SR
+Filter: ON HP Fc 80 Hz Q 0.7
 
+# --- Gaming EQ ---
+Channel: LFE
+Filter: ON LS Fc 60 Hz Gain 6 dB Q 0.7      # Deep bass for explosions
 
-# --- EQ for Gaming ---
-Filter: LFE LS Fc=60 Hz Gain=6 dB Q=0.7           # Deep bass for explosions
-Filter: C PK Fc=1000 Hz Gain=3 dB Q=1.0            # Voice/dialog presence on center
-Filter: ALL PK Fc=3000 Hz Gain=2 dB Q=1.2          # High-mid clarity for spatial effects
-Filter: ALL HS Fc=9000 Hz Gain=3 dB Q=0.8        # Crisp highs for footsteps, cues
-Filter: ALL LS Fc=120 Hz Gain=1.5 dB Q=0.7        # Low end fullness without muddiness
+Channel: C
+Filter: ON PK Fc 1000 Hz Gain 3 dB Q 1.0    # Dialog clarity
 
-GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
+Channel: all
+Filter: ON PK Fc 3000 Hz Gain 2 dB Q 1.2    # Spatial effect clarity
+Filter: ON HS Fc 9000 Hz Gain 3 dB Q 0.8    # High-end for cues/footsteps
+Filter: ON LS Fc 120 Hz Gain 1.5 dB Q 0.7   # Low-end fullness
 
-# --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+# --- Rear speaker delay for surround depth ---
+Channel: SL SR
+Delay: 20 ms

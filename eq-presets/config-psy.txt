@@ -15,41 +15,37 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -5 dB
+Preamp: -5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo routing ---
-Copy: L=1 R=2               # Front Left/Right
-Copy: C=0.32*L+0.32*R       # Center = L+R attenuated by -10 dB (0.32 ≈ -10 dB)
-Copy: LFE=0.79*L+0.79*R     # Subwoofer = L+R boosted by -2 dB (0.79 ≈ -2 dB)
-Copy: SL=0.79*1             # Surround Left = L
-Copy: SR=0.79*2             # Surround Right = R
+Copy: L=1 R=2                               # Front Left/Right
+Copy: C=0.32*1+0.32*2                       # Center = L+R attenuated ~-10 dB
+Copy: LFE=0.79*1+0.79*2                     # Subwoofer = L+R (~-2 dB boost)
+Copy: SL=0.79*1                             # Surround Left = L
+Copy: SR=0.79*2                             # Surround Right = R
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+# --- Subwoofer filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7               # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6              # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6              # 2nd stage (24 dB/oct slope)
 
-# --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
+# --- High-pass filtering for all mains ---
+Channel: L R C SL SR
+Filter: ON HP Fc 80 Hz Q 0.7
 
+# --- Psy Trance Tonal Sculpting ---
+Channel: all
+Filter: ON LS Fc 50 Hz Gain 6 dB Q 0.9         # Deep bass boost
+Filter: ON PK Fc 120 Hz Gain 4 dB Q 1.0        # Kick drum punch
+Filter: ON PK Fc 600 Hz Gain -3 dB Q 1.2       # Muddiness cleanup
+Filter: ON PK Fc 2000 Hz Gain 3.5 dB Q 1.0     # Mid clarity for synths
+Filter: ON PK Fc 7000 Hz Gain 4 dB Q 1.0       # Crisp upper highs
+Filter: ON HS Fc 11000 Hz Gain 5 dB Q 0.8      # Air and sparkle
 
-# --- Psy Trance EQ ---
-Filter: ALL LS Fc=50 Hz Gain=6 dB Q=0.9          # Deep bass boost
-Filter: ALL PK Fc=120 Hz Gain=4 dB Q=1.0          # Tight kick presence
-Filter: ALL PK Fc=600 Hz Gain=-3 dB Q=1.2         # Clean muddiness
-Filter: ALL PK Fc=2000 Hz Gain=3.5 dB Q=1.0       # Clear synths and mids
-Filter: ALL PK Fc=7000 Hz Gain=4 dB Q=1.0          # Sparkling highs
-Filter: ALL HS Fc=11000 Hz Gain=5 dB Q=0.8       # Air and brightness
-
-GraphicEQ: 25 0; 40 0; 63 0; 100 0; 160 0; 250 0; 400 0; 630 -2; 1000 -1.7; 1600 3.9; 2500 6; 4000 6.5; 6300 6.3; 10000 5.7; 16000 3.6
-
-# --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+# --- Surround delay for psychoacoustic depth ---
+Channel: SL SR
+Delay: 20 ms

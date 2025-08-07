@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -1.0 dB
+Preamp: -1.0 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -28,10 +28,27 @@ Copy: LFE=1.41*4    # Subwoofer
 Copy: SL=5          # Surround Left
 Copy: SR=6          # Surround Right
 
-# --- EQ for movies ---
-Filter: C PK Fc=1000 Hz Gain=3 dB Q=1.0          # Boost center for clear dialogue
-Filter: ALL LS Fc=100 Hz Gain=2 dB Q=0.7          # Warmth on all channels
-Filter: LFE LS Fc=60 Hz Gain=10 dB Q=0.7          # Strong deep bass on subwoofer
-Filter: ALL PK Fc=3000 Hz Gain=2 dB Q=1.2         # Clear highs for ambience and effects
-Filter: SL PK Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround left
-Filter: SR PK Fc=6000 Hz Gain=1.5 dB Q=1.0        # Bright surround right
+# --- Movie Enhancer EQ for 5.1 Setup ---
+
+# Boost center channel for clear dialogue
+Channel: C
+Filter: ON PK Fc 1000 Hz Gain 3 dB Q 1.0
+
+# Gentle low-shelf warmth across all channels
+Channel: ALL
+Filter: ON LS Fc 100 Hz Gain 2 dB Q 0.7
+
+# Deep bass emphasis on subwoofer
+Channel: LFE
+Filter: ON LS Fc 60 Hz Gain 10 dB Q 0.7
+
+# High-mid clarity for ambience and effects
+Channel: ALL
+Filter: ON PK Fc 3000 Hz Gain 2 dB Q 1.2
+
+# Brightness boost on rear surround channels
+Channel: SL
+Filter: ON PK Fc 6000 Hz Gain 1.5 dB Q 1.0
+
+Channel: SR
+Filter: ON PK Fc 6000 Hz Gain 1.5 dB Q 1.0

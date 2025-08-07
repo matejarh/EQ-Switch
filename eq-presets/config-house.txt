@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -4 dB
+Preamp: -3 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -27,30 +27,26 @@ Copy: LFE=0.50*1+0.50*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: SL=0.7*1           # Surround Left = L (-1 dB)
 Copy: SR=0.7*2           # Surround Right = R (-1 dB)
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+Channel: LFE
+Filter: ON HP Fc 25 Hz
+Filter: ON LP Fc 100 Hz
+Filter: ON LP Fc 100 Hz
 
-# --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=100 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=100 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=100 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=100 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=100 Hz Q=0.7             # Cut low-end from rear R
-
+Channel: L R C RL RR
+Filter: ON HP Fc 100 Hz
 
 # --- House Tonal Enhancements ---
-Filter: ALL PK Fc=60 Hz Gain=3.5 dB Q=1.0     # Punchy kick drum
-Filter: ALL PK Fc=120 Hz Gain=2.5 dB Q=1.0    # Warm bassline
-Filter: ALL PK Fc=700 Hz Gain=-1.5 dB Q=1.0   # Reduce muddiness
-Filter: ALL PK Fc=2500 Hz Gain=2 dB Q=1.0     # Hi-hats and percs
-Filter: ALL PK Fc=8000 Hz Gain=2.5 dB Q=0.8   # Air and sparkle
+Channel: all
+Filter: ON PK Fc 60 Hz Gain 3.5 dB Q 1
+Filter: ON PK Fc 120 Hz Gain 2.5 dB Q 1
+Filter: ON PK Fc 700 Hz Gain 1.5 dB Q 1
+Filter: ON PK Fc 2500 Hz Gain 2 dB Q 1
+Filter: ON PK Fc 8000 Hz Gain 2.5 dB Q 0.8
 
 # --- Tonal shaping ---
-Filter: ALL LS Fc=40 Hz Gain=2.5 dB Q=0.7    # Extra bottom depth
-Filter: ALL HS Fc=10000 Hz Gain=2 dB Q=0.8   # Brilliance
+Filter: ON LSC Fc 40 Hz Gain 2.5 dB Q 0.7
+Filter: ON HSC Fc 10000 Hz Gain 2 dB Q 0.8
 
 # --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+Channel: RL RR
+Delay: 20 ms

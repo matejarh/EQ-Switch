@@ -15,54 +15,49 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -2 dB
+Preamp: -2 dB
 
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo routing ---
-Copy: L=1 R=2            # Front Left/Right
-Copy: C=0.45*1+0.45*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB) + add 2 dB
-Copy: LFE=0.70*1+0.70*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
-Copy: SL=0.32*1         # Surround Left = L at -12 dB
-Copy: SR=0.32*2         # Surround Right = R at -12 dB
+Copy: L=1 R=2                            # Front Left/Right
+Copy: C=0.45*1+0.45*2                    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB) + 2 dB
+Copy: LFE=0.70*1+0.70*2                  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: SL=0.32*1                          # Surround Left = L at -12 dB
+Copy: SR=0.32*2                          # Surround Right = R at -12 dB
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+# --- Subwoofer cleanup and low-pass filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7            # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6           # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6           # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=80 Hz Q=0.7             # Cut low-end from front L
-Filter: ON R  HP Fc=80 Hz Q=0.7             # Cut low-end from front R
-Filter: ON C  HP Fc=80 Hz Q=0.7             # Cut low-end from center
-Filter: ON SL HP Fc=80 Hz Q=0.7             # Cut low-end from rear L
-Filter: ON SR HP Fc=80 Hz Q=0.7             # Cut low-end from rear R
-
+Channel: L R C SL SR
+Filter: ON HP Fc 80 Hz Q 0.7
 
 # --- Dialog and soundtrack clarity ---
-Filter: ALL PK Fc=300 Hz Gain=-1.5 dB Q=1.0    # Reduce mud
-Filter: ALL PK Fc=600 Hz Gain=2 dB Q=0.9       # Voice presence
-Filter: ALL PK Fc=1200 Hz Gain=1.5 dB Q=1.0    # Improve intelligibility
-Filter: ALL PK Fc=4000 Hz Gain=1.5 dB Q=1.0    # Brighten speech and FX
-Filter: ALL PK Fc=8000 Hz Gain=2 dB Q=0.9      # Add cinematic sparkle
+Channel: all
+Filter: ON PK Fc 300 Hz Gain -1.5 dB Q 1.0
+Filter: ON PK Fc 600 Hz Gain 2 dB Q 0.9
+Filter: ON PK Fc 1200 Hz Gain 1.5 dB Q 1.0
+Filter: ON PK Fc 4000 Hz Gain 1.5 dB Q 1.0
+Filter: ON PK Fc 8000 Hz Gain 2 dB Q 0.9
 
 # --- Bass and impact ---
-Filter: ALL PK Fc=60 Hz Gain=3 dB Q=1.0        # Sub bass for effects
-Filter: ALL LS Fc=80 Hz Gain=2 dB Q=0.7       # Warm low-end body
+Filter: ON PK Fc 60 Hz Gain 3 dB Q 1.0         # Sub bass for effects
+Filter: ON LS Fc 80 Hz Gain 2 dB Q 0.7         # Warm low-end body
 
-# ---  Cut the speech band on rear (~500 Hz – 2.5 kHz) ---
-Filter: ON SL PK Fc=600 Hz Gain=-6 dB Q=1.0
-Filter: ON SL PK Fc=1200 Hz Gain=-6 dB Q=1.0
-Filter: ON SL PK Fc=2500 Hz Gain=-6 dB Q=1.0
-
-Filter: ON SR PK Fc=600 Hz Gain=-6 dB Q=1.0
-Filter: ON SR PK Fc=1200 Hz Gain=-6 dB Q=1.0
-Filter: ON SR PK Fc=2500 Hz Gain=-6 dB Q=1.0
+# --- Cut speech band on rear channels (~500 Hz – 2.5 kHz) ---
+Channel: SL SR
+Filter: ON PK Fc 600 Hz Gain -6 dB Q 1.0
+Filter: ON PK Fc 1200 Hz Gain -6 dB Q 1.0
+Filter: ON PK Fc 2500 Hz Gain -6 dB Q 1.0
 
 # --- Final polish ---
-Filter: ALL HS Fc=10000 Hz Gain=1.5 dB Q=0.8  # Crisp air
+Filter: ON HS Fc 10000 Hz Gain 1.5 dB Q 0.8    # Crisp air
 
 # --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+Channel: SL SR
+Delay: 20 ms

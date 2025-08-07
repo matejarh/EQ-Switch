@@ -15,41 +15,41 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -4 dB
+Preamp: -4 dB
 
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo routing ---
-Copy: L=1 R=2                     # Front Left/Right
-Copy: C=0.25*1+0.25*2             # Center = L+R attenuated by -7 dB
-Copy: LFE=0.50*1+0.50*2           # Subwoofer = L+R boosted by +3 dB
-Copy: SL=0.7*1                    # Surround Left = L (-1 dB)
-Copy: SR=0.7*2                    # Surround Right = R (-1 dB)
+Copy: L=1 R=2                            # Front Left/Right
+Copy: C=0.25*1+0.25*2                    # Center = L+R attenuated by -12 dB (0.25)
+Copy: LFE=0.50*1+0.50*2                  # Subwoofer = L+R (~+3 dB)
+Copy: SL=0.70*1                          # Surround Left = L (-1.1 dB)
+Copy: SR=0.70*2                          # Surround Right = R (-1.1 dB)
 
-# --- Tight low-pass filtering for subwoofer ---
-Filter: ON LFE HP Fc=25 Hz Q=0.7            # Clean subsonic rumble
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 1st stage LP
-Filter: ON LFE LP Fc=100 Hz Q=0.6           # 2nd stage for 24 dB/oct
+# --- Subwoofer cleanup and low-pass filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7             # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Filter: ON L  HP Fc=100 Hz Q=0.7
-Filter: ON R  HP Fc=100 Hz Q=0.7
-Filter: ON C  HP Fc=100 Hz Q=0.7
-Filter: ON SL HP Fc=100 Hz Q=0.7
-Filter: ON SR HP Fc=100 Hz Q=0.7
+Channel: L R C SL SR
+Filter: ON HP Fc 100 Hz Q 0.7
 
 # --- Disco Tonal Enhancements ---
-Filter: ALL PK Fc=50 Hz Gain=3.0 dB Q=1.0     # Deep bass bump (kick & bass guitar)
-Filter: ALL PK Fc=110 Hz Gain=2.0 dB Q=1.0    # Rounded low-mids (groove warmth)
-Filter: ALL PK Fc=600 Hz Gain=1.5 dB Q=0.9    # Forward midrange (snare, rhythm guitar)
-Filter: ALL PK Fc=2000 Hz Gain=2.0 dB Q=1.0   # Claps, percs, and vocal presence
-Filter: ALL PK Fc=9500 Hz Gain=2.5 dB Q=0.8   # Strings, sparkle, air
+Channel: all
+Filter: ON PK Fc 50 Hz Gain 3.0 dB Q 1.0       # Deep bass bump (kick & bass guitar)
+Filter: ON PK Fc 110 Hz Gain 2.0 dB Q 1.0      # Rounded low-mids (groove warmth)
+Filter: ON PK Fc 600 Hz Gain 1.5 dB Q 0.9      # Forward midrange (snare, rhythm guitar)
+Filter: ON PK Fc 2000 Hz Gain 2.0 dB Q 1.0     # Claps, percs, and vocal presence
+Filter: ON PK Fc 9500 Hz Gain 2.5 dB Q 0.8     # Strings, sparkle, air
 
 # --- Tonal shaping ---
-Filter: ALL LS Fc=45 Hz Gain=2.0 dB Q=0.7     # Extra bass fullness
-Filter: ALL HS Fc=11000 Hz Gain=2.0 dB Q=0.8  # Brilliance and sheen
+Filter: ON LS Fc 45 Hz Gain 2.0 dB Q 0.7       # Extra bass fullness
+Filter: ON HS Fc 11000 Hz Gain 2.0 dB Q 0.8    # Brilliance and sheen
 
 # --- Rear speaker delay for improved surround effect ---
-Delay: SL=20 ms
-Delay: SR=20 ms
+Channel: SL SR
+Delay: 20 ms
+
