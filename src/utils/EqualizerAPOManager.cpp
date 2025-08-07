@@ -35,8 +35,8 @@ void EqualizerAPOManager::checkSection()
 
     // Perform checks (only once)
     bool isAPOOk = detectInstallation();
-    bool isProfilesOk = IsProfilesFolderAccessible();
-    bool isEditorOk = IsLaunchEditorBatAvailable();
+    bool isProfilesOk = IsProfilesFolderAccessible(getProfilesDir());
+    bool isEditorOk = editorexeIsAvailableAt(editorPath);
 
     // Display status label
     ImGui::BeginGroup();
@@ -58,51 +58,55 @@ void EqualizerAPOManager::checkSection()
 
     struct StatusCheck
     {
-        bool ok;
+        bool result;
+        std::string okMessage;
+        std::string errorMessage;
         std::string tooltip;
+        std::string extraInfo;
     };
 
     std::vector<StatusCheck> checks = {
-        {isAPOOk, "Equalizer APO is installed at"},
-        {isProfilesOk, "Profiles folder is accessible at"},
-        {isEditorOk, "LaunchEditor.bat is available at"}};
+        {isAPOOk,
+         "✔ Equalizer APO is installed at",
+         "✖ Equalizer APO is not installed or not detected.",
+         "Equalizer APO must be properly installed and detected.",
+         installPath},
+        {isProfilesOk,
+         "✔ Profiles folder is accessible at",
+         "✖ Profiles folder is missing or inaccessible.",
+         "EQ profiles should be located in the 'eq-presets' folder.",
+         EqualizerAPOManager::getProfilesDir()},
+        {isEditorOk,
+         "✔ Editor is available at",
+         "✖ Editor executable was not found.",
+         "Optional: add path to your profile editor in settings.",
+         editorPath}};
 
     for (int i = 0; i < checks.size(); ++i)
     {
         const StatusCheck &check = checks[i];
-        ImU32 color = check.ok ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255);
+        ImU32 color = check.result ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255);
         ImVec2 center = ImVec2(ledPos.x + ledSize * 0.5f, ledPos.y + ledSize * 0.5f);
 
+        // Draw LED circle
         drawList->AddCircleFilled(center, ledSize * 0.5f, color, 20);
 
-        // Add invisible button for hover detection
+        // Hover detection
         ImGui::SetCursorScreenPos(ledPos);
         ImGui::InvisibleButton(("##led" + std::to_string(i)).c_str(), ImVec2(ledSize, ledSize));
 
         if (ImGui::IsItemHovered())
         {
-            if (!check.ok)
+            ImGui::PushFont(g_unicodeFont);
+            if (check.result)
             {
-                ImGui::SetTooltip("%s", check.tooltip.c_str());
+                ImGui::SetTooltip("%s\n%s", check.okMessage.c_str(), check.extraInfo.c_str());
             }
             else
             {
-                // Show detailed info for successful check
-                ImGui::PushFont(g_unicodeFont);
-                if (i == 0 && isAPOOk)
-                {
-                    ImGui::SetTooltip("✅ %s\n%s", check.tooltip.c_str(), installPath.c_str());
-                }
-                else if (i == 1 && isProfilesOk)
-                {
-                    ImGui::SetTooltip("✅ %s\n%s", check.tooltip.c_str(), EqualizerAPOManager::getProfilesDir().c_str());
-                }
-                else if (i == 2 && isEditorOk)
-                {
-                    ImGui::SetTooltip("✅ %s\n%s", check.tooltip.c_str(), editorPath.c_str());
-                }
-                ImGui::PopFont();
+                ImGui::SetTooltip("%s\n%s", check.errorMessage.c_str(), check.tooltip.c_str());
             }
+            ImGui::PopFont();
         }
 
         ledPos.x += ledSize + spacing;
@@ -111,25 +115,6 @@ void EqualizerAPOManager::checkSection()
     ImGui::EndGroup();
 
     ImGui::PopFont();
-
-/*     // --- Optional: show detected paths if checks passed ---
-    if (isAPOOk || isProfilesOk)
-    {
-        ImGui::Spacing();
-        ImGui::PushFont(g_SmallFont);
-
-        if (isAPOOk)
-        {
-            ImGui::Text("Equalizer APO: %s", installPath.c_str());
-        }
-
-        if (isProfilesOk)
-        {
-            ImGui::Text("Profiles folder: %s", profilesDir.c_str());
-        }
-
-        ImGui::PopFont();
-    } */
 }
 
 /**
@@ -260,8 +245,8 @@ std::string EqualizerAPOManager::getEditorPath() const
 
 /**
  * @brief Returns the installation directory of Equalizer APO.
- * 
- * @return std::string 
+ *
+ * @return std::string
  */
 std::string EqualizerAPOManager::getInstallDir() const
 {
@@ -270,8 +255,8 @@ std::string EqualizerAPOManager::getInstallDir() const
 
 /**
  * @brief Returns the directory where Equalizer APO profiles are stored.
- * 
- * @return std::string 
+ *
+ * @return std::string
  */
 std::string EqualizerAPOManager::getProfilesDir() const
 {
