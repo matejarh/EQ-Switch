@@ -24,8 +24,8 @@ Copy: NONE
 Copy: L=1 R=2            # Front Left/Right
 Copy: C=0.25*1+0.25*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
 Copy: LFE=1.41*1+1.41*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
-Copy: SL=0.7*1           # Surround Left = L (-1 dB)
-Copy: SR=0.7*2           # Surround Right = R (-1 dB)
+Copy: RL=1.00*1           # Rear Left = L (-1 dB)
+Copy: RR=1.00*2           # Rear Right = R (-1 dB)
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE
@@ -34,8 +34,8 @@ Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
 Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Channel: L R C RL RR SL SR
-Filter: ON HP Fc 80 Hz Q 0.7
+Channel: L R C RL RR
+Filter: ON HP Fc 100 Hz Q 0.7
 
 # --- House Tonal Enhancements ---
 Channel: all
@@ -46,8 +46,8 @@ Filter: ON PK Fc 2500 Hz Gain 2 dB Q 1
 Filter: ON PK Fc 8000 Hz Gain 2.5 dB Q 0.8
 
 # --- Tonal shaping ---
-Filter: ON LSC Fc 40 Hz Gain 2.5 dB Q 0.7
-Filter: ON HSC Fc 10000 Hz Gain 2 dB Q 0.8
+Filter: ON LS Fc 40 Hz Gain 2.5 dB Q 0.7
+Filter: ON HS Fc 10000 Hz Gain 2 dB Q 0.8
 
 # --- Rear speaker delay for improved surround effect ---
 Channel: RL RR

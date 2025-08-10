@@ -22,16 +22,16 @@ Copy: NONE
 # --- Native 5.1 Routing (pass-through) ---
 Copy: L=1
 Copy: R=2
-Copy: C=3
+Copy: C=0.45*3
 Copy: LFE=4
-Copy: SL=5
-Copy: SR=6
+Copy: RL=5
+Copy: RR=6
 
 # --- EQ adjustments for gaming ---
 Channel: LFE
 Filter: ON LS Fc 60 Hz Gain 6 dB Q 0.7             # Deep bass for explosions and effects
 Channel: C
-Filter: ON PK Fc 1000 Hz Gain -7 dB Q 1.0          # Reduce center channel volume to compensate broken knob
+Filter: ON PK Fc 1000 Hz Gain 2.5 dB Q 1.0         # Reduce center channel volume to compensate broken knob
 Filter: ON PK Fc 3000 Hz Gain 3 dB Q 1.0           # Voice clarity boost
 Channel: all
 Filter: ON PK Fc 3000 Hz Gain 2 dB Q 1.2           # Enhance spatial detail cues on all channels

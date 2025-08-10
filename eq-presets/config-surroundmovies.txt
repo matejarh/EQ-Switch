@@ -47,8 +47,5 @@ Channel: ALL
 Filter: ON PK Fc 3000 Hz Gain 2 dB Q 1.2
 
 # Brightness boost on rear surround channels
-Channel: SL
-Filter: ON PK Fc 6000 Hz Gain 1.5 dB Q 1.0
-
-Channel: SR
+Channel: RL RR
 Filter: ON PK Fc 6000 Hz Gain 1.5 dB Q 1.0

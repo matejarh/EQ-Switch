@@ -24,8 +24,8 @@ Copy: NONE
 Copy: L=1 R=2            # Front Left/Right
 Copy: C=0.45*3           # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
 Copy: LFE=1.41*4         # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
-Copy: SL=0.8*5           # Surround Left = L (-2 dB)
-Copy: SR=0.8*6           # Surround Right = R (-2 dB)
+Copy: RL=1.00*5           # Rear Left = L (-2 dB)
+Copy: RR=1.00*6           # Rear Right = R (-2 dB)
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE
@@ -34,7 +34,7 @@ Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
 Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
-Channel: L R C RL RR SL SR
+Channel: L R C RL RR
 Filter: ON HP Fc 80 Hz Q 0.7
 
 # --- Jazz Tonal Shaping ---
