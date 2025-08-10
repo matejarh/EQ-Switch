@@ -1,65 +1,85 @@
+// ProfileManager.cpp
+
 #include "ProfileManager.h"
 #include <fstream>
 #include <filesystem>
 #include <iostream>
 #include <Windows.h>
 
-using namespace std;
 namespace fs = std::filesystem;
 
-ProfileManager::ProfileManager(const string &profilesDir, const string &configTarget)
+ProfileManager::ProfileManager(const std::string &profilesDir, const std::string &configTarget)
     : profilesDir(profilesDir), configTarget(configTarget) {}
 
-
-vector<Profile> ProfileManager::loadProfiles() const
+std::vector<Profile> ProfileManager::loadProfiles() const
 {
-    vector<Profile> profiles;
+    std::vector<Profile> profiles;
+
+    if (!fs::exists(profilesDir) || !fs::is_directory(profilesDir))
+    {
+        std::cerr << "Profiles directory not found: " << profilesDir << "\n";
+        return profiles;
+    }
+
+    constexpr std::string_view tag = "# EQ Profile: ";
 
     for (const auto &entry : fs::directory_iterator(profilesDir))
     {
         if (entry.is_regular_file() && entry.path().extension() == ".txt")
         {
-            string filename = entry.path().filename().string();
-            ifstream file(entry.path());
-            string line;
-            string label = filename;
-            while (getline(file, line))
+            std::ifstream file(entry.path());
+            if (!file.is_open())
+                continue;
+
+            std::string filename = entry.path().filename().string();
+            std::string label;
+            std::string line;
+            bool foundTag = false;
+
+            while (std::getline(file, line))
             {
-                if (line.find("# EQ Profile: ") == 0)
+                if (line.rfind(tag, 0) == 0) // line starts with tag
                 {
-                    label = line.substr(14);
+                    label = line.substr(tag.size());
+                    foundTag = true;
                     break;
                 }
             }
-            profiles.push_back({label, filename});
+
+            if (foundTag)
+            {
+                profiles.push_back({label, filename});
+            }
+            // else skip this file because no tag found
         }
     }
-
     return profiles;
 }
 
-string ProfileManager::getCurrentProfile() const
+std::string ProfileManager::getCurrentProfile() const
 {
-    ifstream file(configTarget);
+    std::ifstream file(configTarget);
     if (!file.is_open())
     {
         return "(Could not read active profile)";
     }
-    string line;
-    while (getline(file, line))
+
+    std::string line;
+    constexpr std::string_view tag = "# EQ Profile: ";
+    while (std::getline(file, line))
     {
-        if (line.find("# EQ Profile: ") == 0)
+        if (line.rfind(tag, 0) == 0)
         {
-            return line.substr(14);
+            return line.substr(tag.size());
         }
     }
     return "(No profile comment found)";
 }
 
-bool ProfileManager::copyFile(const string &src, const string &dest)
+bool ProfileManager::copyFile(const std::string &src, const std::string &dest)
 {
-    ifstream source(src, ios::binary);
-    ofstream destination(dest, ios::binary);
+    std::ifstream source(src, std::ios::binary);
+    std::ofstream destination(dest, std::ios::binary);
     if (!source || !destination)
         return false;
 
@@ -67,23 +87,13 @@ bool ProfileManager::copyFile(const string &src, const string &dest)
     return true;
 }
 
-
 bool ProfileManager::applyProfile(const Profile &p)
 {
-    std::cout << "Applying profile: " << p.label << "\n";
-    string srcFile = profilesDir + p.filename;
-    std::cout << "Source: " << srcFile << "\n";
-    std::cout << "Target: " << configTarget << "\n";
+    fs::path srcFile = fs::path(profilesDir) / p.filename;
 
-    if (copyFile(srcFile, configTarget))
-    {
-        return true;
-    }
-    return false;
+    std::cout << "Applying profile: " << p.label << "\n"
+              << "Source: " << srcFile << "\n"
+              << "Target: " << configTarget << "\n";
+
+    return copyFile(srcFile.string(), configTarget);
 }
-
-/* bool ProfileManager::launchEditor()
-{
-    ShellExecuteW(NULL, L"open", L"launch_editor.bat", NULL, NULL, SW_SHOWNORMAL);
-    return true;
-} */
