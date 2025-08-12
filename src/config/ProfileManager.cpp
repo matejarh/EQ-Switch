@@ -53,6 +53,13 @@ std::vector<Profile> ProfileManager::loadProfiles() const
             // else skip this file because no tag found
         }
     }
+
+    // Sort alphabetically by label
+    std::sort(profiles.begin(), profiles.end(),
+              [](const Profile &a, const Profile &b)
+              {
+                  return a.label < b.label;
+              });
     return profiles;
 }
 
