@@ -9,7 +9,7 @@ void Footer(EqualizerAPOManager &apoManager)
     
     // Draw footer
     float contentWidth = ImGui::GetContentRegionAvail().x - 0.0f; // Leave some space for padding
-    const char *versionText = "v1.2.0";
+    const char *versionText = "v1.2.1";
     const char *authorText = "Developed by: Grower";
 
     ImGui::Separator();
