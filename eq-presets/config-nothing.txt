@@ -1,0 +1,13 @@
+# EQ Profile: -- No enhancements --
+# Center output compensated by -7 dB to correct broken knob
+
+# --- dB to Gain Factor Cheat Sheet ---
+# -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
+# -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
+# -8 dB  = 0.40     -7 dB  = 0.45     -6 dB  = 0.50     -5 dB  = 0.56
+# -4 dB  = 0.63     -3 dB  = 0.71     -2 dB  = 0.79     -1 dB  = 0.89
+#  0 dB  = 1.00     +1 dB  = 1.12     +2 dB  = 1.26     +3 dB  = 1.41
+# +4 dB  = 1.58     +5 dB  = 1.78     +6 dB  = 2.00     +7 dB  = 2.24
+# +8 dB  = 2.52     +9 dB  = 2.82     +10 dB = 3.16     +11 dB = 3.55
+# +12 dB = 3.98     +13 dB = 4.47     +14 dB = 5.01     +15 dB = 5.62
+# +16 dB = 6.31
