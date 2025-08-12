@@ -23,7 +23,7 @@ Copy: NONE
 # --- Pass-through routing (5.1) ---
 Copy: L=1           # Front Left
 Copy: R=2           # Front Right
-Copy: C=0.56*3      # Center
+Copy: C=0.40*3      # Center
 Copy: LFE=1.41*4    # Subwoofer
 Copy: SL=5          # Surround Left
 Copy: SR=6          # Surround Right

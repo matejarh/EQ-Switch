@@ -17,12 +17,12 @@
 Preamp: ALL -1.5 dB
 
 # --- Clear existing routing ---
-Copy: NONE
+# Copy: NONE
 
 # --- Native 5.1 Routing (pass-through) ---
 Copy: L=1
 Copy: R=2
-Copy: C=0.45*3
+Copy: C=0.40*3
 Copy: LFE=4
 Copy: RL=5
 Copy: RR=6

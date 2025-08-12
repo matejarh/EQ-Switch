@@ -1,7 +1,7 @@
-# EQ Profile: Deep House Music Preset from Stereo to 5.1
+# EQ Profile: Jazz Nightclub Music Preset from Stereo to 5.1
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +3 dB
-# Surround widened for immersive club feel
+# Surrounds gently enhanced for ambience
 
 # --- dB to Gain Factor Cheat Sheet ---
 # -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
@@ -15,17 +15,17 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -4.5 dB
+Preamp: -2.5 dB
 
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo routing ---
-Copy: L=1 R=2                             # Front Left/Right
-Copy: C=0.40*1+0.40*2                     # Center = L+R attenuated by -9.9 dB (0.32)
-Copy: LFE=1.41*1+1.41*2                   # Subwoofer = L+R (~0 dB boost)
-Copy: RL=1                                # Rear Left = L (-1.1 dB)
-Copy: RR=2                                # Rear Right = R (-1.1 dB)
+Copy: L=1 R=2                            # Front Left/Right
+Copy: C=0.40*1+0.40*2                    # Center = L+R attenuated by ~-7 dB
+Copy: LFE=1.41*1+1.41*2                  # Subwoofer = L+R boosted by ~+3 dB
+Copy: RL=1.00*1                          # Rear Left = L
+Copy: RR=1.00*2                          # Rear Right = R
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE
@@ -35,22 +35,14 @@ Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage for 24 dB/oct
 
 # --- High-pass filtering to offload low frequencies from mains ---
 Channel: L R C RL RR
-Filter: ON HP Fc 100 Hz Q 0.7
+Filter: ON HP Fc 80 Hz Q 0.7
 
-# --- Deep House Tonal Enhancements ---
-Channel: all
-Filter: ON PK Fc 45 Hz Gain 4 dB Q 1.0        # Deep sub punch
-Filter: ON PK Fc 90 Hz Gain 3 dB Q 1.0        # Full-bodied kick
-Filter: ON PK Fc 250 Hz Gain 1.5 dB Q 1.0     # Warmth & body
-Filter: ON PK Fc 600 Hz Gain -2 dB Q 1.0      # Tame muddiness
-Filter: ON PK Fc 1500 Hz Gain 1.5 dB Q 1.0    # Percussive clarity
-Filter: ON PK Fc 5500 Hz Gain 2 dB Q 1.0      # Synth shimmer
-Filter: ON PK Fc 10000 Hz Gain 1.5 dB Q 0.9   # Smooth top end
-
-# --- Tonal shaping ---
-Filter: ON LS Fc 40 Hz Gain 2.5 dB Q 0.7      # Extra bottom depth
-Filter: ON HS Fc 9500 Hz Gain 2 dB Q 0.8      # Sparkle and openness
-Filter: ON HS Fc 10000 Hz Gain 2 dB Q 0.8     # Additional brilliance
+Filter: ON LS Fc 50 Hz Gain 2.5 dB Q 0.7        # Full, warm bass foundation
+Filter: ON PK Fc 250 Hz Gain 1.5 dB Q 1.0       # Body for double bass & warmth
+Filter: ON PK Fc 800 Hz Gain 1.0 dB Q 1.0       # Mid richness for piano & guitar
+Filter: ON PK Fc 2500 Hz Gain -0.5 dB Q 1.2     # Smooth out potential horn harshness
+Filter: ON HS Fc 8000 Hz Gain 1.5 dB Q 0.8      # Gentle air and cymbal shimmer
+Filter: ON HS Fc 12000 Hz Gain 1.0 dB Q 0.8     # Added clarity without brittleness
 
 # --- Rear speaker delay for improved surround effect ---
 Channel: RL RR
