@@ -2,12 +2,6 @@
 #include <windows.h>
 #include <string>
 
-/* bool launchEditor()
-{
-    ShellExecuteW(NULL, L"open", L"launch_editor.bat", NULL, NULL, SW_SHOWNORMAL);
-    return true;
-} */
-
 bool launchEditor(const std::string &editorPath, const std::string &apoDir)
 {
     // Convert paths to wide strings

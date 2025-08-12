@@ -17,7 +17,11 @@ int findCurrentProfileIndex(const std::vector<Profile> &profiles, const std::str
     return -1;
 }
 
-void ProfilesSection(ProfileManager &profileManager, std::string &currentProfileOut, int &selectedProfileOut, bool *p_exit, EqualizerAPOManager &apoManager)
+void ProfilesSection(ProfileManager &profileManager, 
+                     std::string &currentProfileOut, 
+                     int &selectedProfileOut, 
+                     bool *p_exit, 
+                     EqualizerAPOManager &apoManager)
 {
     // --- Status message for profile apply ---
     static std::string statusMessage;
