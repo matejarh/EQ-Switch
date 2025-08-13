@@ -1,6 +1,7 @@
 # 🎛️ EQ Switch
 
-**EQ Switch** is a minimalist ImGui/DirectX11-based C++ desktop application that lets you easily switch between different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) profiles. It's designed for fast access to audio configurations, especially when working with multiple speaker setups like stereo, 5.1, or custom room correction profiles.
+**EQ Switch** is a desktop utility for managing [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) profiles with real-time LED-style audio visualization.  
+Now featuring a **15-band Frequency VU Meter** powered by **KISS FFT** for live spectrum analysis.
 
 ![screenshot](screenshot.png "EQ Switch")
 
@@ -8,57 +9,30 @@
 
 ## ✨ Features
 
-- 🎚️ **Real-Time Audio VU Meters**  
-  Visualize levels for up to 6 channels using Progress Bars, LED-style Vertical or Horizontal meters.
+- **🎚 Profile Switching**
+  - Instantly swap between [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) profiles.
+  - Profiles stored in a dedicated directory for easy access.
 
-- 🖱️ **Fast Profile Switching**  
-  Easily switch Equalizer APO profiles with one click or double-click.
+- **📊 Real-Time Audio Visualization**
+  - **Stereo VU Meters**  
+    - LED-style meters for left/right channels.
+    - Smooth decay for natural responsiveness.
+  - **Frequency VU Meter**  
+    - 15 bands spanning 25 Hz → 20 kHz.
+    - Log/compressive scaling — low volumes are more visible while peaks saturate at top.
+    - Color zones: **Green → Yellow → Red**.
+    - DPI-aware rendering for all monitor scales.
 
-- 🎨 **Dark Modern Theme**  
-  Includes a custom dark UI theme inspired by VS Code Dark Modern.
-
-- 💾 **Prebuilt Profiles Included**  
-  Comes with stereo-to-5.1 transformation profiles ready to use.
-
-- 🧠 **Persistent Selection**  
-  Keeps track of your current profile and scrolls to it on startup.
-
-- 🔧 **Modular C++ Codebase**  
-  Easily extensible—components like theming, fonts, meters, and audio capture are isolated in clean modules.
+- **🖥 DPI Awareness**
+  - GUI scales with `main_scale` for crisp rendering on any display.
 
 ---
 
 ## 📦 Prebuilt Profiles
 
-The project comes with a set of prebuilt Equalizer APO profiles, **primarily used for transforming stereo audio into 5.1 surround**. These profiles are located in the `eq-presets/` directory and can be customized or replaced as needed.
+The project comes with a set of prebuilt [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) profiles, **primarily used for transforming stereo audio into 5.1 surround**. These profiles are located in the `eq-presets/` directory and can be customized or replaced as needed.
 
-## 📦 Folder Structure
 
-```
-EQSwitch/
-├── imgui/ # ImGui + backends (DX11/Win32)
-├── src/
-│ ├── main.cpp # WinMain entry and render loop
-│ ├── gui/
-│ │ └── EQSwitchWindow.{cpp,h}
-│ ├── audio/
-│ │ └── AudioCapture.{cpp,h}
-│ ├── config/
-│ │ └── ProfileManager.{cpp,h}
-│ ├── utils/
-│ │ ├── VUBuffer.{cpp,h}
-│ │ └── Fonts.{cpp,h}
-│ │ └── AppLauncher.{cpp,h}
-│ │ └── ChannelLabels.{cpp,h}
-│ │ └── SystemUtils.{cpp,h}
-├── eq-presets/ # Your custom config .txt profiles
-├── launch_editor.bat # Optional editor launcher
-├── resources/ # Icons / resources
-├── tasks.json # VSCode build tasks
-├── c_cpp_properties.json
-└── README.md
-```
----
 ## Controls
 
 - **Double-click** a profile in the list to apply
@@ -73,6 +47,7 @@ EQSwitch/
 - Windows (x64)
 - VSCode or `cl.exe` via Developer Command Prompt
 - [ImGui](https://github.com/ocornut/imgui) (included locally)
+- [KissFFT](https://github.com/mborgerding/kissfft) (included locally)
 - [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) installed
 
 ### ⚙️ VSCode Build with `tasks.json`
@@ -122,17 +97,29 @@ Each profile file should include a line:
 ## 📃 License
 
 MIT — feel free to use, modify, and redistribute.
-Credit to [ImGui](https://github.com/ocornut/imgui) and [Equalizer APO](https://sourceforge.net/projects/equalizerapo/).
+Credit to [ImGui](https://github.com/ocornut/imgui), [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) and [KissFFT](https://github.com/mborgerding/kissfft).
 
 ## 🙏 Credits
 
 - Developed by Matej Arh
-- Special thanks to the [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) community and [ImGui](https://github.com/ocornut/imgui) by Omar Cornut.
+- Special thanks to the [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) community, [ImGui](https://github.com/ocornut/imgui) by Omar Cornut and [KissFFT](https://github.com/mborgerding/kissfft).
 - Fonts: Carlito (from Windows font directory)
 
-### 📋 Changelog
+## 📋 Changelog
 
-#### v1.1.0 – Enhanced GUI and Theming
+### v1.3.0 - Frequency VU Meter
+- 🎛 **Added Frequency VU Meter** — 15 bands covering 25 Hz → 20 kHz.
+- 📈 **Log/Compressive Scaling** — boosts low-level details while keeping peaks natural.
+- ↔️ **Layout Enhancements** — right-aligned & SameLine meter placement.
+- 🖥 **DPI Scaling Improvements** — crisp visuals on all display scales.
+
+### v1.2.0
+- 🖥️ Cleaner and more responsive UI with ImGui
+- 📁 Corrected profile path syntax for better compatibility
+- 💡 Clear status indicators with tooltips for quick diagnostics
+- 🛠 Refactored codebase for better maintainability and future updates
+
+### v1.1.0 – Enhanced GUI and Theming
 - 🆕 Added support for switching between VU meter modes: **Progress Bar**, **LED Horizontal**, and **LED Vertical**
 - 🎨 Refined **Dark Modern** ImGui theme (VS Code–inspired)
 - 🧱 Introduced modular **VuMeters** class
@@ -140,7 +127,7 @@ Credit to [ImGui](https://github.com/ocornut/imgui) and [Equalizer APO](https://
 - ✅ Combo box now aligns properly and uses small font
 - 🛠️ Fixed profile selection issue and added auto-scroll behavior
 
-#### v1.0.0 – Initial Release
+### v1.0.0 – Initial Release
 - 🎚️ VU meters with Progress Bar visualization
 - 🔁 Equalizer APO profile switching with double-click
 - 🖼️ Fullscreen DX11/Win32 GUI with ImGui
