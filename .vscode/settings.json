@@ -68,7 +68,9 @@
         "xmemory": "cpp",
         "xtr1common": "cpp",
         "xutility": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "complex": "cpp",
+        "numeric": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

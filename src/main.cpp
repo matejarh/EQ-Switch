@@ -16,6 +16,7 @@
 #include "utils/EqualizerAPOManager.h"
 #include "utils/Theme.h"
 #include "resource.h"
+#include "audio/FrequencyVUMeter.h"
 
 // ---------------- Global Direct3D state ----------------
 static ID3D11Device*           g_pd3dDevice           = nullptr;
@@ -119,7 +120,7 @@ bool InitAppWindow(HINSTANCE hInstance, float scale) {
 
     g_hWnd = CreateWindow(wc.lpszClassName, _T("EQ Switch"),
                           WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-                          (int)(800 * scale), (int)(700 * scale),
+                          (int)(850 * scale), (int)(750 * scale),
                           nullptr, nullptr, wc.hInstance, nullptr);
 
     // Set icon
@@ -165,8 +166,13 @@ void MainLoop(float scale) {
     }
 
     constexpr int NUM_CHANNELS = 6;
+    int fftSize = 1024;
+    float decayRate = 0.05f;
+    int sampleRate = 48000;
+
     VUBuffer gVUBuffer(NUM_CHANNELS);
-    AudioCapture gAudioCapture(gVUBuffer);
+    FrequencyVUMeter gFrequencyVuMeter(fftSize, decayRate, sampleRate);
+    AudioCapture gAudioCapture(gVUBuffer, sampleRate, fftSize);
     ProfileManager gProfileManager(profilesDir, configTarget);
 
     gAudioCapture.start();
@@ -184,7 +190,7 @@ void MainLoop(float scale) {
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, scale, apoManager);
+        ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, scale, apoManager, gFrequencyVuMeter, gAudioCapture, sampleRate);
 
         ImGui::Render();
         const float clearColor[4] = {0.1f, 0.1f, 0.1f, 1.0f};

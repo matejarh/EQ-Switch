@@ -3,15 +3,16 @@
 #include "../config/ProfileManager.h"
 #include "../utils/VUBuffer.h"
 #include "../utils/EqualizerAPOManager.h"
+#include "../audio/FrequencyVUMeter.h"
 #include <string>
-/* #include <d3d11.h> */
+#include <AudioCapture.h>
 
-void ShowEQSwitchWindow(ProfileManager& profileManager,
-                        VUBuffer& vuBuffer,
-                        bool* p_exit = nullptr, 
-                        float main_scale = 1.0f, 
-                        EqualizerAPOManager& apoManager = EqualizerAPOManager::getInstance()/* ,
-                        ID3D11ShaderResourceView* iconTexture = nullptr */
-                        );
+void ShowEQSwitchWindow(ProfileManager &profileManager,
+                        VUBuffer &vuBuffer,
+                        bool *p_exit, float main_scale,
+                        EqualizerAPOManager &apoManager,
+                        FrequencyVUMeter &frequencyVumeter,
+                        AudioCapture &audioCapture, int sampleRate
+                    );
 
 int findCurrentProfileIndex(const std::vector<Profile>& profiles, const std::string& currentProfile);           

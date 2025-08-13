@@ -3,6 +3,7 @@
 
 void VUMetersSection(VUBuffer &vuBuffer, float main_scale)
 {
+    ImGui::BeginGroup();
         // VU Meters section
     static VuMeterMode vuMeterMode = VuMeterMode::LedHorizontal; // Default mode
     const char *modes[] = {"Progress Bar", "LED Horizontal", "LED Vertical"};
@@ -47,4 +48,6 @@ void VUMetersSection(VUBuffer &vuBuffer, float main_scale)
         vuMeters.LedVuMeter(vuBuffer, main_scale);
         break;
     }
+
+    ImGui::EndGroup();
 }
