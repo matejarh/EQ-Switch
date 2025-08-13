@@ -1,0 +1,3 @@
+# --- High-pass filtering to offload low frequencies from mains ---
+Channel: L R C RL RR SL SR
+Filter: ON HP Fc 100 Hz Q 0.7

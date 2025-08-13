@@ -1,5 +1,5 @@
 #pragma once
 #include <imgui.h>
-#include "EqualizerAPOManager.h"
+#include "utils/EqualizerAPOManager.h"
 
 void Footer(EqualizerAPOManager &apoManager);

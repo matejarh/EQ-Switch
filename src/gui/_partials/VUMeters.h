@@ -1,10 +1,10 @@
 #pragma once
 
-#include "VUBuffer.h"
-#include "ChannelLabels.h"
 #include <imgui.h>
-#include "fonts.h"
-#include <FrequencyVUMeter.h>
+#include "utils/fonts.h"
+#include "audio/VUBuffer.h"
+#include "utils/ChannelLabels.h"
+#include "audio/FrequencyVUMeter.h"
 
 enum class VuMeterMode
 {

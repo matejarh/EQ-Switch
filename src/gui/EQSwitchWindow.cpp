@@ -2,17 +2,17 @@
 #include "EQSwitchWindow.h"
 #include "utils/AppLauncher.h"
 #include "utils/ChannelLabels.h"
-#include "utils/VUMeters.h"
+#include "gui/_partials/VUMeters.h"
 #include "utils/fonts.h"
 #include "utils/SystemUtils.h"
 #include "utils/EqualizerAPOManager.h"
-#include "utils/ProfilesSelector.h"
-#include <PopupUtils.h>
+#include "gui/_partials/ProfilesSelector.h"
+#include "utils/PopupUtils.h"
 #include <vector>
 #include <filesystem>
 #include <windows.h>
-#include <Footer.h>
-#include <VUMetersSection.h>
+#include "gui/_partials/Footer.h"
+#include "gui/_partials/VUMetersSection.h"
 /* #include <d3d11.h> */
 
 void ShowEQSwitchWindow(ProfileManager &profileManager,

@@ -1,4 +1,3 @@
-#include "AudioCapture.h"
 #include <windows.h>
 #undef max
 #include <mmdeviceapi.h>
@@ -7,6 +6,8 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm> // for std::max
+
+#include "audio/AudioCapture.h"
 
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "avrt.lib")

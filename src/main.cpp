@@ -10,7 +10,7 @@
 #include "imgui_impl_dx11.h"
 
 #include "audio/AudioCapture.h"
-#include "utils/VUBuffer.h"
+#include "audio/VUBuffer.h"
 #include "utils/fonts.h"
 #include "gui/EQSwitchWindow.h"
 #include "utils/EqualizerAPOManager.h"

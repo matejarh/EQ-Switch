@@ -1,6 +1,7 @@
-#include "VUBuffer.h"
 #include <algorithm>
 #include <mutex>
+
+#include "audio/VUBuffer.h"
 
 VUBuffer::VUBuffer(int numChannels)
     : buffer(numChannels, 0.0f)

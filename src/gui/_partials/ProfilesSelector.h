@@ -1,7 +1,8 @@
 #pragma once
-#include "imgui.h"
-#include "ProfileManager.h"
-#include "EqualizerAPOManager.h"
+#include <imgui.h>
+
+#include "config/ProfileManager.h"
+#include "utils/EqualizerAPOManager.h"
 
 void ProfilesSection(ProfileManager &profileManager,
                      std::string &currentProfileOut, 

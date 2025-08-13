@@ -3,8 +3,9 @@
 #include <thread>
 #include <atomic>
 #include <vector>
-#include "VUBuffer.h"
-#include "FrequencyVUMeter.h"
+
+#include "audio/VUBuffer.h"
+#include "audio/FrequencyVUMeter.h"
 
 class AudioCapture
 {

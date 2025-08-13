@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../config/ProfileManager.h"
-#include "../utils/VUBuffer.h"
+#include "../audio/VUBuffer.h"
 #include "../utils/EqualizerAPOManager.h"
 #include "../audio/FrequencyVUMeter.h"
 #include <string>

@@ -1,5 +1,5 @@
-#include "VUMeters.h"
 #include <imgui.h>
+#include "gui/_partials/VUMeters.h"
 
 void VUMetersSection(VUBuffer &vuBuffer, float main_scale)
 {

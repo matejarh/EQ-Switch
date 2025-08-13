@@ -1,6 +1,7 @@
 #include <imgui.h>
-#include "fonts.h"
-#include "EqualizerAPOManager.h"
+#include "utils/fonts.h"
+#include "utils/EqualizerAPOManager.h"
+#include "gui/_partials/CheckSection.h"
 
 void Footer(EqualizerAPOManager &apoManager)
 {
@@ -18,7 +19,7 @@ void Footer(EqualizerAPOManager &apoManager)
     // Left-aligned version
     ImGui::Text("%s", versionText);
     ImGui::SameLine();
-    apoManager.checkSection(); // Check APO installation and profiles
+    checkSection(apoManager); // Check APO installation and profiles
 
     // Right-aligned author
     ImGui::SameLine(contentWidth - ImGui::CalcTextSize(authorText).x);

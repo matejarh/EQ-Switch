@@ -10,6 +10,7 @@
                 "${workspaceFolder}/src/config",
                 "${workspaceFolder}/src/audio",
                 "${workspaceFolder}/src/gui",
+                "${workspaceFolder}/src/gui/_partials",
                 "${workspaceFolder}/src/utils",
                 "${workspaceFolder}/src/utils/kissfft",
                 "${workspaceFolder}/resources"
@@ -36,6 +37,7 @@
                 "${workspaceFolder}/src/config",
                 "${workspaceFolder}/src/audio",
                 "${workspaceFolder}/src/gui",
+                "${workspaceFolder}/src/gui/_partials",
                 "${workspaceFolder}/src/utils",
                 "${workspaceFolder}/src/utils/kissfft",
                 "${workspaceFolder}/resources"

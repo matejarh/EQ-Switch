@@ -29,7 +29,7 @@ EqualizerAPOManager &EqualizerAPOManager::getInstance()
  * Displays a horizontal row of status LEDs with tooltips for failed checks, and shows
  * actual paths if checks succeed.
  */
-void EqualizerAPOManager::checkSection()
+/* void EqualizerAPOManager::checkSection()
 {
     ImGui::PushFont(g_SmallFont);
 
@@ -115,7 +115,7 @@ void EqualizerAPOManager::checkSection()
     ImGui::EndGroup();
 
     ImGui::PopFont();
-}
+} */
 
 /**
  * @brief Detects the installation of Equalizer APO on a 64-bit Windows system.

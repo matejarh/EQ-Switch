@@ -1,10 +1,11 @@
 // ProfileManager.cpp
 
-#include "ProfileManager.h"
 #include <fstream>
 #include <filesystem>
 #include <iostream>
 #include <Windows.h>
+
+#include "config/ProfileManager.h"
 
 namespace fs = std::filesystem;
 

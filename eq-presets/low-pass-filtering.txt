@@ -1,0 +1,5 @@
+# --- Subwoofer cleanup and low-pass filtering ---
+Channel: LFE
+Filter: ON HP Fc 25 Hz Q 0.7            # Clean subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6           # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6           # 2nd stage for 24 dB/oct

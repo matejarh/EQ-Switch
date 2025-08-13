@@ -1,7 +1,8 @@
-#include "FrequencyVUMeter.h"
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+
+#include "audio/FrequencyVUMeter.h"
 
 FrequencyVUMeter::FrequencyVUMeter(int fftSize, float decayRate, int sampleRate)
     : fftSize(fftSize),

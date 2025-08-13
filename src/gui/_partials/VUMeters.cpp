@@ -1,11 +1,12 @@
-#include "VUBuffer.h"
-#include "ChannelLabels.h"
 #include <imgui.h>
-#include "fonts.h"
-#include "VUMeters.h"
-#include "FrequencyVUMeter.h"
 #include <iostream>
 #include <algorithm>
+
+#include "audio/VUBuffer.h"
+#include "audio/FrequencyVUMeter.h"
+#include "utils/ChannelLabels.h"
+#include "utils/fonts.h"
+#include "gui/_partials/VUMeters.h"
 
 void VuMeters::VuMeterProgresBar(VUBuffer &vuBuffer, float main_scale)
 {
