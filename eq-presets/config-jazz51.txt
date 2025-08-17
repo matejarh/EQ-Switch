@@ -3,6 +3,8 @@
 # LFE boosted +3 dB
 # Surrounds gently enhanced for ambience
 
+# Icon: f7a6
+
 # --- dB to Gain Factor Cheat Sheet ---
 # -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
 # -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35

@@ -1,6 +1,8 @@
-# EQ Profile: Gaming from Native 5.1 Input
+# EQ Profile: Gaming from Native Preset 5.1 Input
 # Center output compensated by -7 dB due to broken knob
 # LFE boosted +4 dB for impactful bass effects
+
+# Icon: f11b
 
 # --- dB to Gain Factor Cheat Sheet ---
 # -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
