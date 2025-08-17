@@ -6,6 +6,7 @@ struct Profile
 {
     std::string label;
     std::string filename;
+    std::string icon;
 };
 
 class ProfileManager
@@ -15,7 +16,9 @@ public:
 
     std::vector<Profile> loadProfiles() const;
     std::string getCurrentProfile() const;
+    std::string getCurrentProfileIcon() const;
     bool applyProfile(const Profile &p);
+    std::string ExtractBaseLabel(const std::string &label);
     // bool launchEditor();
 
 private:

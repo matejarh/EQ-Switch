@@ -9,6 +9,7 @@ void ShowStyledModalPopup(
     const char *message,
     const char *linkLabel,
     const char *linkUrl,
+    const float main_scale,
     std::function<void()> onClose)
 {
     // Open once
@@ -22,7 +23,7 @@ void ShowStyledModalPopup(
     }
 
     // Center and size
-    ImGui::SetNextWindowSize(ImVec2(400, 0), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(400 * main_scale, 0), ImGuiCond_Always);
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 

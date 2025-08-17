@@ -68,6 +68,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
             "Equalizer APO was not detected on this system.",
             "Download Equalizer APO",
             "https://sourceforge.net/projects/equalizerapo/",
+            main_scale,
             []()
             {
                 PostQuitMessage(0); // Exit on close
@@ -83,6 +84,7 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
             "The profiles directory is not accessible.\n",
             false,
             false,
+            main_scale,
             []()
             {
                 PostQuitMessage(0); // Exit on close
@@ -98,34 +100,33 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
                      ImGuiWindowFlags_NoMove |
                      ImGuiWindowFlags_NoCollapse);
 
-    ImGui::PushFont(g_SmallFont);
+    
+    const char* headerText = R"( ________  ______        ______               __   __              __ 
+|        \/      \      /      \             |  \ |  \            |  \
+| ▓▓▓▓▓▓▓▓  ▓▓▓▓▓▓\    |  ▓▓▓▓▓▓\__   __   __ \▓▓_| ▓▓_    _______| ▓▓____
+| ▓▓__   | ▓▓  | ▓▓    | ▓▓___\▓▓  \ |  \ |  \  \   ▓▓ \  /       \ ▓▓    \
+| ▓▓  \  | ▓▓  | ▓▓     \▓▓    \| ▓▓ | ▓▓ | ▓▓ ▓▓\▓▓▓▓▓▓ |  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓\
+| ▓▓▓▓▓  | ▓▓ _| ▓▓     _\▓▓▓▓▓▓\ ▓▓ | ▓▓ | ▓▓ ▓▓ | ▓▓ __| ▓▓     | ▓▓  | ▓▓
+| ▓▓_____| ▓▓/ \ ▓▓    |  \__| ▓▓ ▓▓_/ ▓▓_/ ▓▓ ▓▓ | ▓▓|  \ ▓▓_____| ▓▓  | ▓▓
+| ▓▓     \\▓▓ ▓▓ ▓▓     \▓▓    ▓▓\▓▓   ▓▓   ▓▓ ▓▓  \▓▓  ▓▓\▓▓     \ ▓▓  | ▓▓
+ \▓▓▓▓▓▓▓▓ \▓▓▓▓▓▓\      \▓▓▓▓▓▓  \▓▓▓▓▓\▓▓▓▓ \▓▓   \▓▓▓▓  \▓▓▓▓▓▓▓\▓▓   \▓▓
+               \▓▓▓)";
+
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
     ImGui::BeginGroup();
 
-    ImGui::PushFont(g_unicodeFont);
-    ImGui::BeginGroup(); // Text block
-    ImGui::TextWrapped(
-        "EQ Switch is a utility for managing and activating Equalizer APO profiles.\n\n"
-        "• Quickly preview and apply profiles from a list.\n"
-        "• Especially useful for converting stereo output to 5.1 speaker setups.\n"
-        "• Automatically copies selected profile to Equalizer APO's config.txt.\n"
-        "• Double-click a profile to apply it instantly.\n"
-        "• Use the VU meters to visualize per-channel audio levels.\n\n"
-        "Make sure Equalizer APO is installed and your profiles are placed in the 'eq-presets' folder.");
-    ImGui::EndGroup();
+    ImGui::PushFont(g_SmallFontMono);
+    ImVec2 textSize = ImGui::CalcTextSize(headerText);
+    float windowWidth = ImGui::GetWindowSize().x;
+    ImGui::SetCursorPosX((windowWidth - textSize.x) * 0.5f);
+    ImGui::TextUnformatted(headerText);
     ImGui::PopFont();
-    ImGui::SameLine();
-
-    ImGui::EndGroup();
-    ImGui::PopStyleColor();
-    ImGui::PopFont();
-
-    ImGui::Separator();
     ImGui::Spacing();
-    ImGui::Text("Current Active Profile: ");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(0.325f, 0.557f, 0.796f, 1.0f), "%s", currentProfile.c_str());
+
+    ImGui::EndGroup();
+    ImGui::PopStyleColor(); 
     ImGui::Separator();
+
     ImGui::Spacing();
 
     ImGui::BeginGroup();
@@ -141,10 +142,14 @@ void ShowEQSwitchWindow(ProfileManager &profileManager,
 
     // Profile selection section
     if (IsProfilesFolderAccessible(apoManager.getProfilesDir()))
-        ProfilesSection(profileManager, currentProfile, selectedProfile, p_exit, apoManager);
+    {
+        static ProfilesSelector profilesSelector;
 
-    ImGui::Spacing();
-
+        profilesSelector.selectionButtons(profileManager, currentProfile,
+                                          selectedProfile,
+                                          p_exit,
+                                          apoManager, main_scale);
+    }
     Footer(apoManager);
 
     ImGui::End();

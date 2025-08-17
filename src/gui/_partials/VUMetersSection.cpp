@@ -4,7 +4,7 @@
 void VUMetersSection(VUBuffer &vuBuffer, float main_scale)
 {
     ImGui::BeginGroup();
-        // VU Meters section
+    // VU Meters section
     static VuMeterMode vuMeterMode = VuMeterMode::LedHorizontal; // Default mode
     const char *modes[] = {"Progress Bar", "LED Horizontal", "LED Vertical"};
     int currentMode = static_cast<int>(vuMeterMode);
@@ -17,7 +17,7 @@ void VUMetersSection(VUBuffer &vuBuffer, float main_scale)
         if (size.x > maxWidth)
             maxWidth = size.x;
     }
-    maxWidth += ImGui::GetStyle().FramePadding.x * 2 + 10.0f; // Add padding
+    maxWidth += ImGui::GetStyle().FramePadding.x * 2 + (10.0f * main_scale); // Add padding
 
     // Draw label
     ImGui::Spacing();

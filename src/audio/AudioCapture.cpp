@@ -145,20 +145,6 @@ void AudioCapture::captureLoop()
                     vuBuffer.setChannelVU(ch, vuLevels[ch]);
                 }
 
-                /* // --- NEW: Process frequency spectrum ---
-                // Mixdown to mono (optional)
-                std::vector<float> monoBuffer(numFramesAvailable);
-                for (UINT32 i = 0; i < numFramesAvailable; ++i)
-                {
-                    float sum = 0.0f;
-                    for (int ch = 0; ch < numChannels; ++ch)
-                    {
-                        sum += samples[i * numChannels + ch];
-                    }
-                    monoBuffer[i] = sum / numChannels; // average channels
-                }
-
-                frequencyVumeter.update(monoBuffer.data(), monoBuffer.size()); */
             }
             else
             {

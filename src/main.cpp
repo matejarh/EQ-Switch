@@ -4,6 +4,7 @@
 #include <tchar.h>
 #include <iostream>
 #include <Shlwapi.h>
+#include <dwmapi.h>
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -111,6 +112,11 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
+void EnableDarkTitleBar(HWND hwnd) {
+    BOOL useDarkMode = TRUE;
+    DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &useDarkMode, sizeof(useDarkMode));
+}
+
 // ---------------- Window Initialization ----------------
 bool InitAppWindow(HINSTANCE hInstance, float scale) {
     WNDCLASSEX wc = {sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L,
@@ -119,10 +125,12 @@ bool InitAppWindow(HINSTANCE hInstance, float scale) {
     RegisterClassEx(&wc);
 
     g_hWnd = CreateWindow(wc.lpszClassName, _T("EQ Switch"),
-                          WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+                          WS_OVERLAPPEDWINDOW, 
+                          CW_USEDEFAULT, CW_USEDEFAULT,
                           (int)(850 * scale), (int)(750 * scale),
                           nullptr, nullptr, wc.hInstance, nullptr);
 
+    EnableDarkTitleBar(g_hWnd);
     // Set icon
     if (HICON hIcon = (HICON)LoadIcon(wc.hInstance, MAKEINTRESOURCE(IDI_ICON1))) {
         SendMessageW(g_hWnd, WM_SETICON, ICON_BIG,   (LPARAM)hIcon);
@@ -189,10 +197,12 @@ void MainLoop(float scale) {
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-
+         
         ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, scale, apoManager, gFrequencyVuMeter, gAudioCapture, sampleRate);
 
         ImGui::Render();
+
+        
         const float clearColor[4] = {0.1f, 0.1f, 0.1f, 1.0f};
         g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
         g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clearColor);
