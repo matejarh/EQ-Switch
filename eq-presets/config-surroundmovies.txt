@@ -17,7 +17,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -1.0 dB
+Preamp: -12.0 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -26,7 +26,7 @@ Copy: NONE
 Copy: L=1           # Front Left
 Copy: R=2           # Front Right
 Copy: C=0.40*3      # Center
-Copy: LFE=1.41*4    # Subwoofer
+Copy: LFE=4         # Subwoofer
 Copy: SL=5          # Surround Left
 Copy: SR=6          # Surround Right
 

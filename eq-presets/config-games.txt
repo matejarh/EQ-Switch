@@ -16,10 +16,10 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: ALL -1.5 dB
+Preamp: -7.6 dB
 
 # --- Clear existing routing ---
-# Copy: NONE
+# Copy: 
 
 # --- Native 5.1 Routing (pass-through) ---
 Copy: L=1

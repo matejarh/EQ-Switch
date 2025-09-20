@@ -17,15 +17,14 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -6 dB
-
+Preamp: -7.2 dB
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
 Copy: C=0.40*1+0.40*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=1.41*1+1.41*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: LFE=L+R
 Copy: RL=1.00*1           # Rear Left = L (-1 dB)
 Copy: RR=1.00*2           # Rear Right = R (-1 dB)
 
@@ -42,12 +41,12 @@ Filter: ON HP Fc 100 Hz Q 0.7
 
 # --- Warm and spacious EQ ---
 Channel: all
-Filter: LS Fc 50 Hz Gain 3 dB Q 0.7       # Gentle bass warmth
-Filter: PK Fc 250 Hz Gain 2 dB Q 1.0       # Smooth body and warmth
-Filter: PK Fc 600 Hz Gain -2 dB Q 1.0      # Reduce muddiness
-Filter: PK Fc 1200 Hz Gain 1.5 dB Q 1.2    # Clarity and detail
-Filter: PK Fc 3000 Hz Gain 2 dB Q 1.0      # Air and openness
-Filter: HS Fc 8000 Hz Gain 1.5 dB Q 0.8  # Gentle sparkle
+Filter: ON LS Fc 50 Hz Gain 3 dB Q 0.7       # Gentle bass warmth
+Filter: ON PK Fc 250 Hz Gain 2 dB Q 1.0       # Smooth body and warmth
+Filter: ON PK Fc 600 Hz Gain -2 dB Q 1.0      # Reduce muddiness
+Filter: ON PK Fc 1200 Hz Gain 1.5 dB Q 1.2    # Clarity and detail
+Filter: ON PK Fc 3000 Hz Gain 2 dB Q 1.0      # Air and openness
+Filter: ON HS Fc 8000 Hz Gain 1.5 dB Q 0.8  # Gentle sparkle
 
 # --- Ambient reverb enhancement ---
 Filter: ON PK Fc 100 Hz Gain 1.5 dB Q 0.5     # Add subtle room resonance

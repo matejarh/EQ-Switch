@@ -15,7 +15,7 @@
 # +16 dB = 6.31
 
 # --- Preamp to avoid clipping ---
-Preamp: -3.5 dB
+Preamp: -15 dB
 
 # --- Clear existing routing ---
 Copy: NONE
@@ -23,7 +23,7 @@ Copy: NONE
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
 Copy: C=0.40*1+0.40*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
-Copy: LFE=1.41*L+1.41*R  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
+Copy: LFE=1.0*1+1.0*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: RL=1               # Rear Left = L
 Copy: RR=2               # Rear Right = R
 
