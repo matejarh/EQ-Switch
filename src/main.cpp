@@ -181,6 +181,8 @@ void MainLoop(float scale) {
     VUBuffer gVUBuffer(NUM_CHANNELS);
     FrequencyVUMeter gFrequencyVuMeter(fftSize, decayRate, sampleRate);
     AudioCapture gAudioCapture(gVUBuffer, sampleRate, fftSize);
+
+    // Scan profiles folder only once at startup
     ProfileManager gProfileManager(profilesDir, configTarget);
 
     gAudioCapture.start();
@@ -197,18 +199,20 @@ void MainLoop(float scale) {
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-         
+
         ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, scale, apoManager, gFrequencyVuMeter, gAudioCapture, sampleRate);
 
         ImGui::Render();
 
-        
         const float clearColor[4] = {0.1f, 0.1f, 0.1f, 1.0f};
         g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
         g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clearColor);
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
         g_pSwapChain->Present(1, 0);
+
+        // Add a small sleep to reduce CPU usage when idle
+        Sleep(1); // 1ms, adjust as needed
     }
 
     gAudioCapture.stop();
