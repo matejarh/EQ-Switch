@@ -83,7 +83,7 @@ void renderFooterButtons(ProfileManager &profileManager,
     {
         ShowStyledModalPopup(
             "⚠ About EQ Switch",
-            "Some title",
+            "EQ Switch - About",
             "EQ Switch is a utility for managing and activating Equalizer APO profiles.\n\n"
             "• Quickly preview and apply profiles from a list.\n"
             "• Especially useful for converting stereo output to 5.1 speaker setups.\n"
