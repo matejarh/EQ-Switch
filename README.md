@@ -1,7 +1,7 @@
 # 🎛️ EQ Switch
 
-**EQ Switch** is a desktop utility for managing [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) profiles with real-time LED-style audio visualization.  
-Now featuring a **15-band Frequency VU Meter** powered by **KISS FFT** for live spectrum analysis.
+**EQ Switch** is a desktop utility for managing [**Equalizer APO**](https://sourceforge.net/projects/equalizerapo/) profiles with real-time LED-style audio visualization.  
+Now featuring a **15-band Frequency VU Meter** powered by [**KissFFT**](https://github.com/mborgerding/kissfft) for live spectrum analysis.
 
 ![screenshot](screenshot.png "EQ Switch")
 
