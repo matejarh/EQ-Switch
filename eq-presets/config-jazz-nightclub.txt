@@ -24,10 +24,14 @@ Copy: NONE
 
 # --- Stereo routing ---
 Copy: L=1 R=2                            # Front Left/Right
-Copy: C=0.40*1+0.40*2                    # Center = L+R attenuated by ~-7 dB
+Copy: C=1*1+1*2                    # Center = L+R attenuated by ~-7 dB
 Copy: LFE=1+2                            # Subwoofer = L+R
 Copy: RL=1.00*1                          # Rear Left = L
 Copy: RR=1.00*2                          # Rear Right = R
+
+# --- Center Preamp ---
+Channel: C
+Preamp: -20 dB
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE

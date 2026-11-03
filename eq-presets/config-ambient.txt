@@ -3,7 +3,7 @@
 # LFE boosted +3 dB for warm sub bass
 # Surrounds balanced for wide atmospheric soundscape
 
-# Icon: f7a6
+# Icon: f6c4
 
 # --- dB to Gain Factor Cheat Sheet ---
 # -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
@@ -18,15 +18,20 @@
 
 # --- Preamp to avoid clipping ---
 Preamp: -7.2 dB
+
 # --- Clear existing routing ---
 Copy: NONE
 
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
-Copy: C=0.40*1+0.40*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
+Copy: C=1*1+1*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
 Copy: LFE=L+R
 Copy: RL=1.00*1           # Rear Left = L (-1 dB)
 Copy: RR=1.00*2           # Rear Right = R (-1 dB)
+
+# --- Center Preamp ---
+Channel: C
+Preamp: -20 dB
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE

@@ -1,4 +1,4 @@
-# EQ Profile: Jazz Music Preset
+# EQ Profile: Jazz from Native Music Preset
 # Center output compensated by -7 dB to correct broken knob
 # LFE boosted +3 dB
 # Surrounds gently enhanced for ambience
@@ -28,6 +28,10 @@ Copy: C=0.40*3            # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
 Copy: LFE=4               # Subwoofer = L+R 
 Copy: RL=1.00*5           # Rear Left = L (-2 dB)
 Copy: RR=1.00*6           # Rear Right = R (-2 dB)
+
+# --- Center Preamp ---
+Channel: C
+Preamp: -20 dB
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE

@@ -3,6 +3,8 @@
 # LFE boosted +3 dB
 # Ambient surrounds for healing environment
 
+# Icon: e579
+
 # --- dB to Gain Factor Cheat Sheet ---
 # -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
 # -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
@@ -22,10 +24,14 @@ Copy: NONE
 
 # --- Stereo routing ---
 Copy: L=1 R=2            # Front Left/Right
-Copy: C=0.40*1+0.40*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
+Copy: C=1*1+1*2    # Center = L+R attenuated by -7 dB (0.45 ≈ -7 dB)
 Copy: LFE=1.0*1+1.0*2  # Subwoofer = L+R boosted by +3 dB (1.41 ≈ +3 dB)
 Copy: RL=1               # Rear Left = L
 Copy: RR=2               # Rear Right = R
+
+# --- Center Preamp ---
+Channel: C
+Preamp: -20 dB
 
 # --- Subwoofer cleanup and low-pass filtering ---
 Channel: LFE
