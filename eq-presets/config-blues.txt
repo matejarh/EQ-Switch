@@ -1,65 +1,52 @@
 # EQ Profile: Blues Music Preset from Stereo to 5.1
-# Center output compensated by -9 dB to correct broken knob
-# LFE boosted +3 dB
 # Surrounds gently enhanced for ambience
 # Blues tuning: warm bass, rich guitar body, natural vocals, smooth highs
 
 # Icon: f7a6
 
-# --- dB to Gain Factor Cheat Sheet ---
-# -16 dB = 0.16     -15 dB = 0.18     -14 dB = 0.20     -13 dB = 0.22
-# -12 dB = 0.25     -11 dB = 0.28     -10 dB = 0.32     -9 dB  = 0.35
-# -8 dB  = 0.40     -7 dB  = 0.45     -6 dB  = 0.50     -5 dB  = 0.56
-# -4 dB  = 0.63     -3 dB  = 0.71     -2 dB  = 0.79     -1 dB  = 0.89
-#  0 dB  = 1.00     +1 dB  = 1.12     +2 dB  = 1.26     +3 dB  = 1.41
-# +4 dB  = 1.58     +5 dB  = 1.78     +6 dB  = 2.00     +7 dB  = 2.24
-# +8 dB  = 2.52     +9 dB  = 2.82     +10 dB = 3.16     +11 dB = 3.55
-# +12 dB = 3.98     +13 dB = 4.47     +14 dB = 5.01     +15 dB = 5.62
-# +16 dB = 6.31
-
-# --- Preamp to avoid clipping ---
+# --- Global preamp ---
 Preamp: -5.8 dB
 
-# --- Clear existing routing ---
+# --- Routing ---
 Copy: NONE
 
-# --- Stereo routing ---
-Copy: L=1 R=2                            # Front Left/Right
-Copy: C=1*1+1*2                    # Center = L+R attenuated by ~-9 dB
+# --- Stereo-to-5.1 routing ---
+Copy: L=1 R=2                                               # Front Left/Right
+Copy: C=1*1+1*2                                             # Center = L + R
 Copy: LFE=L+R
-Copy: RL=1.00*1                          # Rear Left = L
-Copy: RR=1.00*2                          # Rear Right = R
+Copy: RL=1.00*1                                             # Rear Left = L
+Copy: RR=1.00*2                                             # Rear Right = R
 
-# --- Center Preamp ---
+# --- Center channel level ---
 Channel: C
 Preamp: -20 dB
 
-# --- Subwoofer cleanup and low-pass filtering ---
+# --- LFE filtering ---
 Channel: LFE
-Filter: ON HP Fc 25 Hz Q 0.7             # Remove subsonic rumble
-Filter: ON LP Fc 100 Hz Q 0.6            # 1st stage LP
-Filter: ON LP Fc 100 Hz Q 0.6            # 2nd stage = 24 dB/oct
+Filter: ON HP Fc 25 Hz Q 0.7                                # Remove subsonic rumble
+Filter: ON LP Fc 100 Hz Q 0.6                               # 1st stage LP
+Filter: ON LP Fc 100 Hz Q 0.6                               # 2nd stage = 24 dB/oct
 
-# --- High-pass filtering to offload low frequencies from mains ---
+# --- Main-channel high-pass filtering ---
 Channel: L R C RL RR
 Filter: ON HP Fc 80 Hz Q 0.7
 
 # --- Blues Tonal Shaping ---
 Channel: all
-Filter: ON PK Fc 100 Hz Gain 2.0 dB Q 0.9       # Bass warmth and kick weight
-Filter: ON PK Fc 250 Hz Gain 1.0 dB Q 1.0       # Body and fullness
-Filter: ON PK Fc 500 Hz Gain -1.0 dB Q 1.0      # Reduce boxiness/mud
-Filter: ON PK Fc 900 Hz Gain 1.5 dB Q 1.0       # Guitar character
-Filter: ON PK Fc 1500 Hz Gain 1.5 dB Q 1.0      # Vocal and guitar presence
-Filter: ON PK Fc 2500 Hz Gain 1.0 dB Q 0.9      # Guitar articulation
-Filter: ON PK Fc 4000 Hz Gain 0.5 dB Q 0.9       # Pick/string detail
-Filter: ON PK Fc 8000 Hz Gain 0.5 dB Q 0.8       # Smooth cymbal detail
+Filter: ON PK Fc 100 Hz Gain 2.0 dB Q 0.9                   # Bass warmth and kick weight
+Filter: ON PK Fc 250 Hz Gain 1.0 dB Q 1.0                   # Body and fullness
+Filter: ON PK Fc 500 Hz Gain -1.0 dB Q 1.0                  # Reduce boxiness/mud
+Filter: ON PK Fc 900 Hz Gain 1.5 dB Q 1.0                   # Guitar character
+Filter: ON PK Fc 1500 Hz Gain 1.5 dB Q 1.0                  # Vocal and guitar presence
+Filter: ON PK Fc 2500 Hz Gain 1.0 dB Q 0.9                  # Guitar articulation
+Filter: ON PK Fc 4000 Hz Gain 0.5 dB Q 0.9                  # Pick/string detail
+Filter: ON PK Fc 8000 Hz Gain 0.5 dB Q 0.8                  # Smooth cymbal detail
 
 # --- Tonal balance ---
-Filter: ON LS Fc 60 Hz Gain 1.5 dB Q 0.7        # Warm low-end foundation
-Filter: ON PK Fc 10000 Hz Gain 0.3 dB Q 1.0      # Gentle definition
-Filter: ON HS Fc 12000 Hz Gain 0.7 dB Q 0.8      # Natural air
+Filter: ON LS Fc 60 Hz Gain 1.5 dB Q 0.7                    # Warm low-end foundation
+Filter: ON PK Fc 10000 Hz Gain 0.3 dB Q 1.0                 # Gentle definition
+Filter: ON HS Fc 12000 Hz Gain 0.7 dB Q 0.8                 # Natural air
 
-# --- Rear speaker delay for improved surround effect ---
+# --- Surround delay ---
 Channel: RL RR
 Delay: 20 ms
