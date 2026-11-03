@@ -1,5 +1,7 @@
 // ProfileSelector.cpp
 
+#include <windows.h>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 #include "imgui.h"
@@ -419,6 +421,19 @@ void ProfilesSelector::Grid(ProfileManager &profileManager,
     ImGui::Separator();
     ImGui::Spacing();
     renderFooterButtons(profileManager, apoManager, selectedProfile, profiles, currentProfile, currentProfileIcon, p_exit, main_scale);
+
+    // Fit the window height to the grid content (footer text is placed at the bottom)
+    float neededClientHeight = ImGui::GetCursorPosY() + ImGui::GetTextLineHeightWithSpacing() + 10.0f + ImGui::GetStyle().WindowPadding.y;
+    HWND hwnd = (HWND)ImGui::GetMainViewport()->PlatformHandleRaw;
+    RECT client;
+    if (hwnd && GetClientRect(hwnd, &client) && !IsZoomed(hwnd) &&
+        std::abs((float)client.bottom - neededClientHeight) > 1.0f)
+    {
+        RECT target = {0, 0, client.right, (LONG)std::ceil(neededClientHeight)};
+        AdjustWindowRect(&target, (DWORD)GetWindowLongPtr(hwnd, GWL_STYLE), FALSE);
+        SetWindowPos(hwnd, nullptr, 0, 0, target.right - target.left, target.bottom - target.top,
+                     SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+    }
 
     currentProfileOut = currentProfile;
     selectedProfileOut = selectedProfile;
