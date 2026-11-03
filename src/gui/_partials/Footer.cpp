@@ -3,10 +3,13 @@
 #include "utils/EqualizerAPOManager.h"
 #include "gui/_partials/CheckSection.h"
 
+float g_footerHeight = 0.0f;
+
 void Footer(EqualizerAPOManager &apoManager)
 {
     // Move to bottom of window
     ImGui::SetCursorPosY(ImGui::GetWindowHeight() - ImGui::GetTextLineHeightWithSpacing() - 10.0f);
+    const float footerStartY = ImGui::GetCursorPosY();
     
     // Draw footer
     float contentWidth = ImGui::GetContentRegionAvail().x - 0.0f; // Leave some space for padding
@@ -25,4 +28,6 @@ void Footer(EqualizerAPOManager &apoManager)
     ImGui::SameLine(contentWidth - ImGui::CalcTextSize(authorText).x);
     ImGui::Text("%s", authorText);
     ImGui::PopFont();
+
+    g_footerHeight = ImGui::GetCursorPosY() - footerStartY + ImGui::GetStyle().WindowPadding.y;
 }

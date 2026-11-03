@@ -9,6 +9,7 @@
 #include "config/ProfileManager.h"
 #include "gui/_partials/ProfilesSelector.h"
 #include "gui/EQSwitchWindow.h"
+#include "gui/_partials/Footer.h"
 #include "utils/fonts.h"
 #include "utils/AppLauncher.h"
 #include <ButtonUtils.h>
@@ -423,7 +424,8 @@ void ProfilesSelector::Grid(ProfileManager &profileManager,
     renderFooterButtons(profileManager, apoManager, selectedProfile, profiles, currentProfile, currentProfileIcon, p_exit, main_scale);
 
     // Fit the window height to the grid content (footer text is placed at the bottom)
-    float neededClientHeight = ImGui::GetCursorPosY() + ImGui::GetTextLineHeightWithSpacing() + 10.0f + ImGui::GetStyle().WindowPadding.y;
+    float footerSlot = (std::max)(ImGui::GetTextLineHeightWithSpacing() + 10.0f, g_footerHeight);
+    float neededClientHeight = ImGui::GetCursorPosY() + footerSlot;
     HWND hwnd = (HWND)ImGui::GetMainViewport()->PlatformHandleRaw;
     RECT client;
     if (hwnd && GetClientRect(hwnd, &client) && !IsZoomed(hwnd) &&
