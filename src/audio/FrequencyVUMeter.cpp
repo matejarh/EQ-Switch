@@ -4,10 +4,10 @@
 
 #include "audio/FrequencyVUMeter.h"
 
-FrequencyVUMeter::FrequencyVUMeter(int fftSize, float decayRate, int sampleRate)
+FrequencyVUMeter::FrequencyVUMeter(int fftSize, float decayTimeSeconds, int sampleRate)
     : fftSize(fftSize),
       bandLevels(NUM_BANDS, 0.0f),
-      decayRate(decayRate),
+            decayTimeSeconds(decayTimeSeconds),
       lastUpdateTime(std::chrono::steady_clock::now()),
       freqData(fftSize / 2 + 1),
       magnitudes(fftSize / 2 + 1),
@@ -85,15 +85,19 @@ void FrequencyVUMeter::processAudio(const float *interleavedSamples, size_t fram
         return;
     }
 
-    computeBands(interleavedSamples, sampleRate, channelCount);
+    auto now = std::chrono::steady_clock::now();
+    float elapsedSeconds = std::chrono::duration<float>(now - lastUpdateTime).count();
+    lastUpdateTime = now;
+    computeBands(interleavedSamples, sampleRate, channelCount, elapsedSeconds);
 }
 
 void FrequencyVUMeter::resetLevels()
 {
     std::fill(bandLevels.begin(), bandLevels.end(), 0.0f);
+    lastUpdateTime = std::chrono::steady_clock::now();
 }
 
-void FrequencyVUMeter::computeBands(const kiss_fft_scalar *interleavedSamples, int sampleRate, int channelCount)
+void FrequencyVUMeter::computeBands(const kiss_fft_scalar *interleavedSamples, int sampleRate, int channelCount, float elapsedSeconds)
 {
     // Frequency band edges (Hz)
     constexpr std::array<float, NUM_BANDS + 1> bandEdges = {
@@ -140,12 +144,9 @@ void FrequencyVUMeter::computeBands(const kiss_fft_scalar *interleavedSamples, i
         }
     }
 
-    // Smooth / decay
+    float decayAmount = elapsedSeconds / std::max(decayTimeSeconds, 1.0e-6f);
     for (size_t i = 0; i < NUM_BANDS; ++i)
     {
-        if (newLevels[i] > bandLevels[i])
-            bandLevels[i] = newLevels[i]; // instant rise
-        else
-            bandLevels[i] = std::max(0.0f, bandLevels[i] - decayRate); // gradual fall
+        bandLevels[i] = std::max(newLevels[i], std::max(0.0f, bandLevels[i] - decayAmount));
     }
 }

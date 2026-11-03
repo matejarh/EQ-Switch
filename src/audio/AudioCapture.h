@@ -10,20 +10,21 @@
 class AudioCapture
 {
 public:
-    AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize = 8192, float decayRate = 0.1f);
+    AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize = 8192, float decayTimeSeconds = 0.43f);
     ~AudioCapture();
 
     void start();
     void stop();
 
     const FrequencyVUMeter& getFrequencyVUMeter() const { return frequencyVUMeter; }
+    int getSampleRate() const { return sampleRate.load(); }
 
 private:
     void captureLoop();
 
     VUBuffer &vuBuffer;
     FrequencyVUMeter frequencyVUMeter;
-    int sampleRate;
+    std::atomic<int> sampleRate;
     int fftSize;
 
     std::atomic<bool> running;

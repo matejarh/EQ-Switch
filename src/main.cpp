@@ -175,12 +175,12 @@ void MainLoop(float scale) {
 
     constexpr int NUM_CHANNELS = 6;
     constexpr int fftSize = 8192;
-    constexpr float decayRate = 0.1f;
+    constexpr float decayTimeSeconds = 0.43f;
     int sampleRate = 48000;
 
     VUBuffer gVUBuffer(NUM_CHANNELS);
-    FrequencyVUMeter gFrequencyVuMeter(fftSize, decayRate, sampleRate);
-    AudioCapture gAudioCapture(gVUBuffer, sampleRate, fftSize, decayRate);
+    FrequencyVUMeter gFrequencyVuMeter(fftSize, decayTimeSeconds, sampleRate);
+    AudioCapture gAudioCapture(gVUBuffer, sampleRate, fftSize, decayTimeSeconds);
 
     // Scan profiles folder only once at startup
     ProfileManager gProfileManager(profilesDir, configTarget);
@@ -200,7 +200,7 @@ void MainLoop(float scale) {
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, scale, apoManager, gFrequencyVuMeter, gAudioCapture, sampleRate);
+        ShowEQSwitchWindow(gProfileManager, gVUBuffer, &exitApp, scale, apoManager, gFrequencyVuMeter, gAudioCapture, gAudioCapture.getSampleRate());
 
         ImGui::Render();
 

@@ -13,11 +13,11 @@
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "avrt.lib")
 
-AudioCapture::AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize, float decayRate)
+AudioCapture::AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize, float decayTimeSeconds)
     : vuBuffer(buffer),
       sampleRate(sampleRate),
       fftSize(fftSize),
-    frequencyVUMeter(fftSize, decayRate),
+            frequencyVUMeter(fftSize, decayTimeSeconds),
       running(false),
       sampleBuffer(fftSize, 0.0f),
       sampleWritePos(0),
@@ -92,6 +92,10 @@ void AudioCapture::captureLoop()
         goto cleanup;
 
     const int numChannels = waveFormat->nChannels;
+    const int captureSampleRate = waveFormat->nSamplesPerSec != 0
+                                      ? static_cast<int>(waveFormat->nSamplesPerSec)
+                                      : sampleRate.load();
+    sampleRate.store(captureSampleRate);
     vuLevels.resize(numChannels, 0.0f); // Ensure correct size for current device
     sampleBuffer.resize(static_cast<size_t>(fftSize) * numChannels);
     const size_t fftHopSize = static_cast<size_t>(fftSize / 4);
@@ -134,7 +138,7 @@ void AudioCapture::captureLoop()
 
                     if (sampleWritePos == static_cast<size_t>(fftSize))
                     {
-                        frequencyVUMeter.processAudio(sampleBuffer.data(), fftSize, sampleRate, numChannels);
+                        frequencyVUMeter.processAudio(sampleBuffer.data(), fftSize, captureSampleRate, numChannels);
                         std::memmove(sampleBuffer.data(), sampleBuffer.data() + fftHopSize * numChannels,
                                      framesToKeep * numChannels * sizeof(float));
                         sampleWritePos = framesToKeep;
