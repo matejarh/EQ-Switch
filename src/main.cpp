@@ -174,13 +174,13 @@ void MainLoop(float scale) {
     }
 
     constexpr int NUM_CHANNELS = 6;
-    int fftSize = 1024;
-    float decayRate = 0.05f;
+    constexpr int fftSize = 8192;
+    constexpr float decayRate = 0.1f;
     int sampleRate = 48000;
 
     VUBuffer gVUBuffer(NUM_CHANNELS);
     FrequencyVUMeter gFrequencyVuMeter(fftSize, decayRate, sampleRate);
-    AudioCapture gAudioCapture(gVUBuffer, sampleRate, fftSize);
+    AudioCapture gAudioCapture(gVUBuffer, sampleRate, fftSize, decayRate);
 
     // Scan profiles folder only once at startup
     ProfileManager gProfileManager(profilesDir, configTarget);

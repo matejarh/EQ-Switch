@@ -10,8 +10,18 @@ FrequencyVUMeter::FrequencyVUMeter(int fftSize, float decayRate, int sampleRate)
       decayRate(decayRate),
       lastUpdateTime(std::chrono::steady_clock::now()),
       freqData(fftSize / 2 + 1),
-      magnitudes(fftSize / 2 + 1)
+      magnitudes(fftSize / 2 + 1),
+            windowedSamples(fftSize),
+            windowCoefficients(fftSize),
+            windowSum(0.0f)
 {
+        constexpr float pi = 3.14159265358979323846f;
+        for (int i = 0; i < fftSize; ++i)
+        {
+                windowCoefficients[i] = 0.5f * (1.0f - std::cos(2.0f * pi * i / (fftSize - 1)));
+                windowSum += windowCoefficients[i];
+        }
+
     fftCfg = kiss_fftr_alloc(fftSize, 0, nullptr, nullptr);
     if (!fftCfg)
     {
@@ -64,13 +74,18 @@ std::vector<std::pair<float, float>> FrequencyVUMeter::getBandRanges(int sampleR
 
 void FrequencyVUMeter::processAudio(const float *samples, size_t sampleCount, int sampleRate)
 {
-    if (sampleCount < fftSize)
+    processAudio(samples, sampleCount, sampleRate, 1);
+}
+
+void FrequencyVUMeter::processAudio(const float *interleavedSamples, size_t frameCount, int sampleRate, int channelCount)
+{
+    if (frameCount < static_cast<size_t>(fftSize) || channelCount <= 0)
     {
         // Not enough samples, ignore or buffer externally before calling
         return;
     }
 
-    computeBands(samples, sampleRate);
+    computeBands(interleavedSamples, sampleRate, channelCount);
 }
 
 void FrequencyVUMeter::resetLevels()
@@ -78,16 +93,8 @@ void FrequencyVUMeter::resetLevels()
     std::fill(bandLevels.begin(), bandLevels.end(), 0.0f);
 }
 
-void FrequencyVUMeter::computeBands(const kiss_fft_scalar *timeData, int sampleRate)
+void FrequencyVUMeter::computeBands(const kiss_fft_scalar *interleavedSamples, int sampleRate, int channelCount)
 {
-    // Use member variables instead of allocating every call
-    kiss_fftr(fftCfg, timeData, freqData.data());
-
-    for (int i = 0; i < fftSize / 2 + 1; ++i)
-    {
-        magnitudes[i] = std::sqrt(freqData[i].r * freqData[i].r + freqData[i].i * freqData[i].i);
-    }
-
     // Frequency band edges (Hz)
     constexpr std::array<float, NUM_BANDS + 1> bandEdges = {
         25.0f, 40.0f, 63.0f, 100.0f, 160.0f,
@@ -96,42 +103,41 @@ void FrequencyVUMeter::computeBands(const kiss_fft_scalar *timeData, int sampleR
 
     std::array<float, NUM_BANDS> newLevels = {0};
 
-    // Map FFT bins to bands and calculate average magnitude per band
-    for (size_t b = 0; b < NUM_BANDS; ++b)
+    for (int channel = 0; channel < channelCount; ++channel)
     {
-        float startFreq = bandEdges[b];
-        float endFreq = bandEdges[b + 1];
+        for (int i = 0; i < fftSize; ++i)
+            windowedSamples[i] = interleavedSamples[static_cast<size_t>(i) * channelCount + channel] * windowCoefficients[i];
 
-        size_t startBin = static_cast<size_t>(startFreq * fftSize / sampleRate);
-        size_t endBin = static_cast<size_t>(endFreq * fftSize / sampleRate);
+        kiss_fftr(fftCfg, windowedSamples.data(), freqData.data());
 
-        startBin = std::min(startBin, magnitudes.size() - 1);
-        endBin = std::min(endBin, magnitudes.size() - 1);
-
-        float sum = 0.0f;
-        size_t count = 0;
-        for (size_t bin = startBin; bin <= endBin; ++bin)
+        for (int i = 0; i < fftSize / 2 + 1; ++i)
         {
-            sum += magnitudes[bin];
-            ++count;
+            magnitudes[i] = std::sqrt(freqData[i].r * freqData[i].r + freqData[i].i * freqData[i].i);
         }
 
-        // Average magnitude
-        float linearLevel = (count > 0) ? (sum / count) : 0.0f;
+        for (size_t b = 0; b < NUM_BANDS; ++b)
+        {
+            float startFreq = bandEdges[b];
+            float endFreq = bandEdges[b + 1];
+            float nyquist = sampleRate * 0.5f;
+            if (startFreq >= nyquist)
+                continue;
 
-        constexpr float expectedMaxAmplitude = 50.0f;
-        float normalized = std::clamp(linearLevel / expectedMaxAmplitude, 0.0f, 1.0f);
+            size_t startBin = static_cast<size_t>(startFreq * fftSize / sampleRate);
+            size_t endBin = static_cast<size_t>(std::min(endFreq, nyquist) * fftSize / sampleRate);
+            startBin = std::min(startBin, magnitudes.size() - 1);
+            endBin = std::min(endBin, magnitudes.size() - 1);
 
-        float whispers = 0.005f; // floor for whispers
-        float highLevels = 10.0f; // contrast factor for mid-to-high levels
+            float peakMagnitude = 0.0f;
+            for (size_t bin = startBin; bin <= endBin; ++bin)
+                peakMagnitude = std::max(peakMagnitude, magnitudes[bin]);
 
-        float scaledLevel = std::log10f(1.0f + highLevels * normalized);
-        scaledLevel = std::clamp(scaledLevel, whispers, 1.0f); // ensures bottom LEDs light up even for tiny signals
-
-        // Remove floor a after clamping to 0..1
-        scaledLevel = (scaledLevel - whispers) / (1.0f - whispers);
-
-        newLevels[b] = scaledLevel;
+            float peakAmplitude = (windowSum > 0.0f) ? (2.0f * peakMagnitude / windowSum) : 0.0f;
+            float levelDb = 20.0f * std::log10(std::max(peakAmplitude, 1.0e-6f));
+            constexpr float meterFloorDb = -60.0f;
+            float level = std::clamp((levelDb - meterFloorDb) / -meterFloorDb, 0.0f, 1.0f);
+            newLevels[b] = std::max(newLevels[b], level);
+        }
     }
 
     // Smooth / decay

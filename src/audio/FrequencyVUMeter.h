@@ -17,10 +17,11 @@ public:
         "250", "400", "630", "1k", "1.6k",
         "2.5k", "4k", "6.3k", "10k", "16k"};
 
-    FrequencyVUMeter(int fftSize = 2048, float decayRate = 0.05f, int sampleRate = 48000);
+    FrequencyVUMeter(int fftSize = 8192, float decayRate = 0.05f, int sampleRate = 48000);
     ~FrequencyVUMeter();
 
     void processAudio(const float *samples, size_t sampleCount, int sampleRate);
+    void processAudio(const float *interleavedSamples, size_t frameCount, int sampleRate, int channelCount);
     const std::vector<float> &getBandLevels() const { return bandLevels; }
     void resetLevels();
     std::vector<float> getNormalizedBandLevels() const;
@@ -34,6 +35,9 @@ private:
     kiss_fftr_cfg fftCfg;
     std::vector<kiss_fft_cpx> freqData;
     std::vector<float> magnitudes;
+    std::vector<float> windowedSamples;
+    std::vector<float> windowCoefficients;
+    float windowSum;
 
-    void computeBands(const kiss_fft_scalar *timeData, int sampleRate);
+    void computeBands(const kiss_fft_scalar *interleavedSamples, int sampleRate, int channelCount);
 };

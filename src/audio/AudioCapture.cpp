@@ -6,17 +6,18 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm> // for std::max
+#include <cstring>
 
 #include "audio/AudioCapture.h"
 
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "avrt.lib")
 
-AudioCapture::AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize)
+AudioCapture::AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize, float decayRate)
     : vuBuffer(buffer),
       sampleRate(sampleRate),
       fftSize(fftSize),
-      frequencyVUMeter(fftSize),
+    frequencyVUMeter(fftSize, decayRate),
       running(false),
       sampleBuffer(fftSize, 0.0f),
       sampleWritePos(0),
@@ -92,6 +93,9 @@ void AudioCapture::captureLoop()
 
     const int numChannels = waveFormat->nChannels;
     vuLevels.resize(numChannels, 0.0f); // Ensure correct size for current device
+    sampleBuffer.resize(static_cast<size_t>(fftSize) * numChannels);
+    const size_t fftHopSize = static_cast<size_t>(fftSize / 4);
+    const size_t framesToKeep = static_cast<size_t>(fftSize) - fftHopSize;
 
     while (running)
     {
@@ -123,20 +127,17 @@ void AudioCapture::captureLoop()
                         vuLevels[ch] = std::max(vuLevels[ch], std::abs(sample));
                     }
 
-                    // Convert to mono by averaging channels
-                    float sum = 0.0f;
                     for (int ch = 0; ch < numChannels; ++ch)
-                        sum += samples[i * numChannels + ch];
-                    float monoSample = sum / numChannels;
+                        sampleBuffer[sampleWritePos * numChannels + ch] = samples[i * numChannels + ch];
 
-                    // Write sample to circular buffer
-                    sampleBuffer[sampleWritePos] = monoSample;
-                    sampleWritePos = (sampleWritePos + 1) % fftSize;
+                    ++sampleWritePos;
 
-                    // When buffer is full (writePos back to 0), process FFT
-                    if (sampleWritePos == 0)
+                    if (sampleWritePos == static_cast<size_t>(fftSize))
                     {
-                        frequencyVUMeter.processAudio(sampleBuffer.data(), fftSize, sampleRate);
+                        frequencyVUMeter.processAudio(sampleBuffer.data(), fftSize, sampleRate, numChannels);
+                        std::memmove(sampleBuffer.data(), sampleBuffer.data() + fftHopSize * numChannels,
+                                     framesToKeep * numChannels * sizeof(float));
+                        sampleWritePos = framesToKeep;
                     }
                 }
                 for (int ch = 0; ch < numChannels; ++ch)

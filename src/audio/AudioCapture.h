@@ -10,7 +10,7 @@
 class AudioCapture
 {
 public:
-    AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize = 2048);
+    AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize = 8192, float decayRate = 0.1f);
     ~AudioCapture();
 
     void start();
