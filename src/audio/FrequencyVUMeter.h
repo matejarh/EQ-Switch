@@ -28,11 +28,12 @@ public:
 
 private:
     int fftSize;
-    kiss_fftr_cfg fftCfg;
-
     std::vector<float> bandLevels;
     float decayRate;
     std::chrono::steady_clock::time_point lastUpdateTime;
+    kiss_fftr_cfg fftCfg;
+    std::vector<kiss_fft_cpx> freqData;
+    std::vector<float> magnitudes;
 
     void computeBands(const kiss_fft_scalar *timeData, int sampleRate);
 };

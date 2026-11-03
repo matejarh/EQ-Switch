@@ -31,4 +31,5 @@ private:
 
     std::vector<float> sampleBuffer;
     size_t sampleWritePos = 0;
+    std::vector<float> vuLevels;
 };

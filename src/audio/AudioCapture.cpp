@@ -19,7 +19,8 @@ AudioCapture::AudioCapture(VUBuffer &buffer, int sampleRate, int fftSize)
       frequencyVUMeter(fftSize),
       running(false),
       sampleBuffer(fftSize, 0.0f),
-      sampleWritePos(0)
+      sampleWritePos(0),
+      vuLevels(2, 0.0f) // Default to stereo, will resize in captureLoop
 {
 }
 
@@ -90,6 +91,7 @@ void AudioCapture::captureLoop()
         goto cleanup;
 
     const int numChannels = waveFormat->nChannels;
+    vuLevels.resize(numChannels, 0.0f); // Ensure correct size for current device
 
     while (running)
     {
@@ -111,7 +113,7 @@ void AudioCapture::captureLoop()
             if (!(flags & AUDCLNT_BUFFERFLAGS_SILENT))
             {
                 float *samples = (float *)data;
-                std::vector<float> vuLevels(numChannels, 0.0f);
+                std::fill(vuLevels.begin(), vuLevels.end(), 0.0f); // Reset buffer
 
                 for (UINT32 i = 0; i < numFramesAvailable; ++i)
                 {
@@ -134,9 +136,6 @@ void AudioCapture::captureLoop()
                     // When buffer is full (writePos back to 0), process FFT
                     if (sampleWritePos == 0)
                     {
-                        /* std::cout << "Sample rate: " << sampleRate;
-                        std::cout << "fftSize: " << fftSize;
-                        std::cout << "sampleBuffer: " << sampleBuffer.data(); */
                         frequencyVUMeter.processAudio(sampleBuffer.data(), fftSize, sampleRate);
                     }
                 }
@@ -144,7 +143,6 @@ void AudioCapture::captureLoop()
                 {
                     vuBuffer.setChannelVU(ch, vuLevels[ch]);
                 }
-
             }
             else
             {

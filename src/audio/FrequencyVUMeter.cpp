@@ -8,7 +8,9 @@ FrequencyVUMeter::FrequencyVUMeter(int fftSize, float decayRate, int sampleRate)
     : fftSize(fftSize),
       bandLevels(NUM_BANDS, 0.0f),
       decayRate(decayRate),
-      lastUpdateTime(std::chrono::steady_clock::now())
+      lastUpdateTime(std::chrono::steady_clock::now()),
+      freqData(fftSize / 2 + 1),
+      magnitudes(fftSize / 2 + 1)
 {
     fftCfg = kiss_fftr_alloc(fftSize, 0, nullptr, nullptr);
     if (!fftCfg)
@@ -78,13 +80,9 @@ void FrequencyVUMeter::resetLevels()
 
 void FrequencyVUMeter::computeBands(const kiss_fft_scalar *timeData, int sampleRate)
 {
-    std::vector<kiss_fft_cpx> freqData(fftSize / 2 + 1);
-
-    // Run FFT
+    // Use member variables instead of allocating every call
     kiss_fftr(fftCfg, timeData, freqData.data());
 
-    // Compute magnitudes
-    std::vector<float> magnitudes(fftSize / 2 + 1);
     for (int i = 0; i < fftSize / 2 + 1; ++i)
     {
         magnitudes[i] = std::sqrt(freqData[i].r * freqData[i].r + freqData[i].i * freqData[i].i);
